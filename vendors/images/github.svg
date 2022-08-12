@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="70" height="70" viewBox="0 0 70 70">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.281" y1="-0.398" x2="1.135" y2="1.266" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#1b00ff"/>
+      <stop offset="1" stop-color="#ae1260"/>
+    </linearGradient>
+  </defs>
+  <g id="github" transform="translate(-653 -292)">
+    <rect id="Rectangle_1" data-name="Rectangle 1" width="70" height="70" transform="translate(653 292)" fill="rgba(255,255,255,0)"/>
+    <path id="Path_1" data-name="Path 1" d="M0,0H70V70Z" transform="translate(653 292)" fill="url(#linear-gradient)"/>
+    <path id="Path_4" data-name="Path 4" d="" transform="translate(687 298)" fill="#f1eaea"/>
+  </g>
+</svg>
