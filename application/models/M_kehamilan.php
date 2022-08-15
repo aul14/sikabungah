@@ -34,6 +34,7 @@ class M_kehamilan extends CI_Model
                     a.CREATE_DATE,
                     b.NAMA, 
                     b.ALAMAT, 
+                    b.KEHAMILAN_KE,
                     b.TGL_LAHIR 
                 FROM SIKABUNGAH_PERIKSA_KEHAMILAN a
                 LEFT JOIN SIKABUNGAH_KEHAMILAN_KE b ON b.ID_KEHAMILAN_KE = a.ID_KEHAMILAN_KE
@@ -68,6 +69,39 @@ class M_kehamilan extends CI_Model
     public function hapus_periksa($id_periksa_kehamilan)
     {
         $sql = "DELETE FROM SIKABUNGAH_PERIKSA_KEHAMILAN WHERE ID_PERIKSA_KEHAMILAN = {$id_periksa_kehamilan}";
+        return $this->db->query($sql);
+    }
+
+    public function detail_periksa_by_id($id_periksa_kehamilan)
+    {
+        $sql = "SELECT * FROM SIKABUNGAH_PERIKSA_KEHAMILAN WHERE ID_PERIKSA_KEHAMILAN = {$id_periksa_kehamilan}";
+        return $this->db->query($sql);
+    }
+
+    public function update_periksa_anak($id_periksa_kehamilan, $tgl_periksa, $berat_badan_janin, $lingkar_kepala, $lingkar_perut)
+    {
+        $sql = "UPDATE SIKABUNGAH_PERIKSA_KEHAMILAN
+                    SET TGL_PERIKSA = '$tgl_periksa',
+                    BERAT_BADAN_JANIN = $berat_badan_janin,
+                    LINGKAR_KEPALA = $lingkar_kepala,
+                    LINGKAR_PERUT = $lingkar_perut
+                    WHERE ID_PERIKSA_KEHAMILAN = $id_periksa_kehamilan";
+        // var_dump($sql);
+        // die;
+        return $this->db->query($sql);
+    }
+
+    public function update_periksa_ibu($id_periksa_kehamilan, $tgl_periksa, $minggu_ke, $berat_badan, $tinggi_badan, $tensi)
+    {
+        $sql = "UPDATE SIKABUNGAH_PERIKSA_KEHAMILAN
+                    SET TGL_PERIKSA = '$tgl_periksa',
+                        MINGGU_KE = '$minggu_ke',
+                        BERAT_BADAN = $berat_badan,
+                        TINGGI_BADAN = $tinggi_badan,
+                        TENSI = '$tensi'
+                    WHERE ID_PERIKSA_KEHAMILAN = $id_periksa_kehamilan";
+        // var_dump($sql);
+        // die;
         return $this->db->query($sql);
     }
 }

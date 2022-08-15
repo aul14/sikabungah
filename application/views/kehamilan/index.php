@@ -319,6 +319,7 @@ date_default_timezone_set('Asia/Jakarta');
 
                 <div class="modal-body">
                     <form action="<?= base_url('kehamilan/store_periksa'); ?>" class="store_periksa px-3">
+                        <input type="hidden" name="id_periksa_kehamilan" id="id_periksa_kehamilan">
                         <input type="hidden" name="id_kehamilan_ke" id="id_kehamilan_ke">
                         <div class="row">
                             <div class="col-12 col-sm-12 col-md-6">
@@ -591,7 +592,7 @@ date_default_timezone_set('Asia/Jakarta');
                                             <i class="dw dw-more"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                            <a class="dropdown-item btn-edit_ibu" data-id_edit_ibu="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-id_kehamilan_edit_ibu="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-norm_edit_ibu="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-edit2"></i> Edit</a>
+                                            <a class="dropdown-item btn-edit_ibu" data-id_edit_ibu="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-id_kehamilan_edit_ibu="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-kehamilan_ke_edit_ibu="${res.data_periksa[i].KEHAMILAN_KE}" data-norm_edit_ibu="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-edit2"></i> Edit</a>
                                             
                                             <a class="dropdown-item btn-hapus_ibu" data-id_kehamilan_hapus_ibu="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_hapus_ibu="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_hapus_ibu="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-trash"></i> Hapus</a>   
                                         </div>
@@ -610,7 +611,7 @@ date_default_timezone_set('Asia/Jakarta');
                                             <i class="dw dw-more"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                            <a class="dropdown-item btn-edit_anak" data-id_kehamilan_edit_anak="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_edit_anak="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_edit_anak="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-edit2"></i> Edit</a>
+                                            <a class="dropdown-item btn-edit_anak" data-kehamilan_ke_edit_anak="${res.data_periksa[i].KEHAMILAN_KE}" data-id_kehamilan_edit_anak="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_edit_anak="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_edit_anak="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-edit2"></i> Edit</a>
                                             
                                             <a class="dropdown-item btn-hapus_anak" data-id_kehamilan_hapus_anak="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_hapus_anak="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_hapus_anak="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-trash"></i> Hapus</a>   
                                         </div>
@@ -1057,12 +1058,210 @@ date_default_timezone_set('Asia/Jakarta');
                 $('.text-periksa').html(`Periksa Kehamilan ke ${kehamilan_ke}`);
             });
 
+            $(document).on('click', '.btn-edit_ibu', function(e) {
+                e.preventDefault();
+                let id_periksa_kehamilan = $(this).data('id_edit_ibu');
+                let id_kehamilan_ke = $(this).data('id_kehamilan_edit_ibu');
+                let norm = $(this).data('norm_edit_ibu');
+                let kehamilan_ke = $(this).data('kehamilan_ke_edit_ibu');
+                $(`#modal-periksa`).modal('show');
+                $('input[name=id_kehamilan_ke]').val(id_kehamilan_ke);
+                $('.text-periksa').html(`Edit Periksa Kehamilan ke ${kehamilan_ke}`);
+
+                $('#modal-periksa form').removeClass('store_periksa');
+                $('#modal-periksa form').addClass('update_periksa_ibu');
+                $(`.update_periksa_ibu`).attr('action', `${BASE_URL}kehamilan/update_periksa_ibu`);
+
+                $.ajax({
+                    type: "post",
+                    url: `${BASE_URL}kehamilan/detail_periksa_by_id`,
+                    data: {
+                        id_edit_ibu: id_periksa_kehamilan
+                    },
+                    dataType: "json",
+                    success: function(res) {
+                        // console.log(res);
+                        $(`input[name=minggu_ke]`).val(res.result['MINGGU_KE']);
+                        $(`input[name=berat_badan]`).val(res.result['BERAT_BADAN']);
+                        $(`input[name=tinggi_badan]`).val(res.result['TINGGI_BADAN']);
+                        $(`input[name=tensi]`).val(res.result['TENSI']);
+                        $(`input[name=tgl_periksa]`).val(res.result['TGL_PERIKSA']);
+                        $(`input[name=id_periksa_kehamilan]`).val(res.result['ID_PERIKSA_KEHAMILAN']);
+
+                        $(`input[name=berat_badan_janin]`).val(res.result['BERAT_BADAN_JANIN']);
+                        $(`input[name=lingkar_kepala]`).val(res.result['LINGKAR_KEPALA']);
+                        $(`input[name=lingkar_perut]`).val(res.result['LINGKAR_PERUT']);
+
+                        $(`input[name=berat_badan_janin]`).attr('readonly', true);
+                        $(`input[name=lingkar_kepala]`).attr('readonly', true);
+                        $(`input[name=lingkar_perut]`).attr('readonly', true);
+
+                        $(`input[name=minggu_ke]`).attr('readonly', false);
+                        $(`input[name=berat_badan]`).attr('readonly', false);
+                        $(`input[name=tinggi_badan]`).attr('readonly', false);
+                        $(`input[name=tensi]`).attr('readonly', false);
+                    }
+                });
+
+                $(`.update_periksa_ibu`).submit(function(e) {
+                    e.preventDefault();
+                    let url_periksa = $(this).attr('action');
+                    $.ajax({
+                        type: "post",
+                        url: url_periksa,
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.data == true) {
+                                $('#data_table_periksa').DataTable().clear();
+                                $('#data_table_periksa').DataTable().destroy();
+                                $('#data_table_periksa_anak').DataTable().clear();
+                                $('#data_table_periksa_anak').DataTable().destroy();
+                                data_periksa(response.id_kehamilan_ke, response.norm);
+                                init_datatable_periksa();
+
+                                $('.update_periksa_ibu')[0].reset();
+                                $(`#modal-periksa`).modal('hide');
+                                $(`input[name=norm_periksa]`).val(response.norm);
+                                $(".text_alert_success").html(response.message);
+                                $('#alert_modal_success').modal('show');
+                                setInterval(function() {
+                                    $('#alert_modal_success').modal('hide');
+                                }, 2000);
+
+                                $('html, body').animate({
+                                    scrollTop: $("#scroll_history").offset().top
+                                }, 600);
+
+                                $('#modal-periksa form').removeClass('update_periksa_ibu');
+                                $('#modal-periksa form').addClass('store_periksa');
+                                $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
+                            } else {
+                                $('.update_periksa_ibu')[0].reset();
+                                $(`#modal-periksa`).modal('hide');
+                                $(`input[name=norm_periksa]`).val(response.norm);
+                                $(".text_alert_failed").html(response.message);
+                                $('#alert_modal_failed').modal('show');
+                                setInterval(function() {
+                                    $('#alert_modal_failed').modal('hide');
+                                }, 2000);
+
+                                $('#modal-periksa form').removeClass('update_periksa_ibu');
+                                $('#modal-periksa form').addClass('store_periksa');
+                                $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
+                            }
+                        }
+                    });
+                });
+            });
+
+            $(document).on('click', '.btn-edit_anak', function(e) {
+                e.preventDefault();
+                let id_periksa_kehamilan = $(this).data('id_edit_anak');
+                let id_kehamilan_ke = $(this).data('id_kehamilan_edit_anak');
+                let norm = $(this).data('norm_edit_anak');
+                let kehamilan_ke = $(this).data('kehamilan_ke_edit_anak');
+                $(`#modal-periksa`).modal('show');
+                $('input[name=id_kehamilan_ke]').val(id_kehamilan_ke);
+                $('.text-periksa').html(`Edit Periksa Kehamilan ke ${kehamilan_ke}`);
+
+                $('#modal-periksa form').removeClass('store_periksa');
+                $('#modal-periksa form').addClass('update_periksa_anak');
+                $(`.update_periksa_anak`).attr('action', `${BASE_URL}kehamilan/update_periksa_anak`);
+
+                $.ajax({
+                    type: "post",
+                    url: `${BASE_URL}kehamilan/detail_periksa_by_id`,
+                    data: {
+                        id_edit_ibu: id_periksa_kehamilan
+                    },
+                    dataType: "json",
+                    success: function(res) {
+                        // console.log(res);
+                        $(`input[name=minggu_ke]`).val(res.result['MINGGU_KE']);
+                        $(`input[name=berat_badan]`).val(res.result['BERAT_BADAN']);
+                        $(`input[name=tinggi_badan]`).val(res.result['TINGGI_BADAN']);
+                        $(`input[name=tensi]`).val(res.result['TENSI']);
+                        $(`input[name=tgl_periksa]`).val(res.result['TGL_PERIKSA']);
+                        $(`input[name=id_periksa_kehamilan]`).val(res.result['ID_PERIKSA_KEHAMILAN']);
+
+                        $(`input[name=berat_badan_janin]`).val(res.result['BERAT_BADAN_JANIN']);
+                        $(`input[name=lingkar_kepala]`).val(res.result['LINGKAR_KEPALA']);
+                        $(`input[name=lingkar_perut]`).val(res.result['LINGKAR_PERUT']);
+
+                        $(`input[name=minggu_ke]`).attr('readonly', true);
+                        $(`input[name=berat_badan]`).attr('readonly', true);
+                        $(`input[name=tinggi_badan]`).attr('readonly', true);
+                        $(`input[name=tensi]`).attr('readonly', true);
+
+                        $(`input[name=berat_badan_janin]`).attr('readonly', false);
+                        $(`input[name=lingkar_kepala]`).attr('readonly', false);
+                        $(`input[name=lingkar_perut]`).attr('readonly', false);
+                    }
+                });
+
+                $(`.update_periksa_anak`).submit(function(e) {
+                    e.preventDefault();
+                    let url_periksa = $(this).attr('action');
+                    $.ajax({
+                        type: "post",
+                        url: url_periksa,
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.data == true) {
+                                $('#data_table_periksa').DataTable().clear();
+                                $('#data_table_periksa').DataTable().destroy();
+                                $('#data_table_periksa_anak').DataTable().clear();
+                                $('#data_table_periksa_anak').DataTable().destroy();
+                                data_periksa(response.id_kehamilan_ke, response.norm);
+                                init_datatable_periksa();
+
+                                $('.update_periksa_anak')[0].reset();
+                                $(`#modal-periksa`).modal('hide');
+                                $(`input[name=norm_periksa]`).val(response.norm);
+                                $(".text_alert_success").html(response.message);
+                                $('#alert_modal_success').modal('show');
+                                setInterval(function() {
+                                    $('#alert_modal_success').modal('hide');
+                                }, 2000);
+
+                                $('html, body').animate({
+                                    scrollTop: $("#scroll_history").offset().top
+                                }, 600);
+
+                                $('#modal-periksa form').removeClass('update_periksa_anak');
+                                $('#modal-periksa form').addClass('store_periksa');
+                                $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
+                            } else {
+                                $('.update_periksa_anak')[0].reset();
+                                $(`#modal-periksa`).modal('hide');
+                                $(`input[name=norm_periksa]`).val(response.norm);
+                                $(".text_alert_failed").html(response.message);
+                                $('#alert_modal_failed').modal('show');
+                                setInterval(function() {
+                                    $('#alert_modal_failed').modal('hide');
+                                }, 2000);
+
+                                $('#modal-periksa form').removeClass('update_periksa_anak');
+                                $('#modal-periksa form').addClass('store_periksa');
+                                $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
+                            }
+                        }
+                    });
+                });
+            });
+
             $(`.btn-hamil`).click(function(e) {
                 e.preventDefault();
                 $(`#modal-kehamilan-ke`).modal('show');
             });
-
-
 
             $(`.store_periksa`).submit(function(e) {
                 e.preventDefault();

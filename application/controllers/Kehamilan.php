@@ -93,7 +93,7 @@ class Kehamilan extends CI_Controller
     {
         $id_kehamilan_ke = $this->input->post('id_kehamilan_ke');
         $norm_periksa = $this->input->post('norm_periksa');
-        $tgl_periksa = date('Y-m-d H:i:s', strtotime($this->input->post('tgl_periksa')));
+        $tgl_periksa = date('Y-m-d H:i', strtotime($this->input->post('tgl_periksa')));
         $minggu_ke = $this->input->post('minggu_ke');
         $berat_badan = $this->input->post('berat_badan');
         $tinggi_badan = $this->input->post('tinggi_badan');
@@ -110,6 +110,67 @@ class Kehamilan extends CI_Controller
         } else {
             $data = false;
             $msg = 'Data periksa Gagal disimpan!';
+        }
+
+        echo json_encode([
+            'data'  => $data,
+            'norm'  => $norm_periksa,
+            'message' => $msg,
+            'id_kehamilan_ke' => $id_kehamilan_ke
+        ]);
+        die;
+    }
+
+    public function update_periksa_anak()
+    {
+        $id_kehamilan_ke = $this->input->post('id_kehamilan_ke');
+        $norm_periksa = $this->input->post('norm_periksa');
+
+        $id_periksa_kehamilan = $this->input->post('id_periksa_kehamilan');
+        $tgl_periksa = date('Y-m-d H:i', strtotime($this->input->post('tgl_periksa')));
+        $berat_badan_janin = $this->input->post('berat_badan_janin');
+        $lingkar_kepala = $this->input->post('lingkar_kepala');
+        $lingkar_perut = $this->input->post('lingkar_perut');
+
+        $query = $this->m_kehamilan->update_periksa_anak($id_periksa_kehamilan, $tgl_periksa, $berat_badan_janin, $lingkar_kepala, $lingkar_perut);
+
+        if ($query) {
+            $data = true;
+            $msg = 'Data periksa kehamilan Berhasil diedit!';
+        } else {
+            $data = false;
+            $msg = 'Data periksa kehamilan Gagal diedit!';
+        }
+
+        echo json_encode([
+            'data'  => $data,
+            'norm'  => $norm_periksa,
+            'message' => $msg,
+            'id_kehamilan_ke' => $id_kehamilan_ke
+        ]);
+        die;
+    }
+
+    public function update_periksa_ibu()
+    {
+        $id_kehamilan_ke = $this->input->post('id_kehamilan_ke');
+        $norm_periksa = $this->input->post('norm_periksa');
+
+        $id_periksa_kehamilan = $this->input->post('id_periksa_kehamilan');
+        $tgl_periksa = date('Y-m-d H:i', strtotime($this->input->post('tgl_periksa')));
+        $minggu_ke = $this->input->post('minggu_ke');
+        $berat_badan = $this->input->post('berat_badan');
+        $tinggi_badan = $this->input->post('tinggi_badan');
+        $tensi = $this->input->post('tensi');
+
+        $query = $this->m_kehamilan->update_periksa_ibu($id_periksa_kehamilan, $tgl_periksa, $minggu_ke, $berat_badan, $tinggi_badan, $tensi);
+
+        if ($query) {
+            $data = true;
+            $msg = 'Data periksa kehamilan Berhasil diedit!';
+        } else {
+            $data = false;
+            $msg = 'Data periksa kehamilan Gagal diedit!';
         }
 
         echo json_encode([
@@ -163,6 +224,27 @@ class Kehamilan extends CI_Controller
             'message' => $msg,
             'norm'    =>  $norm,
             'id_kehamilan_ke' => $id_kehamilan_ke
+        ]);
+        die;
+    }
+
+    public function detail_periksa_by_id()
+    {
+        $id_periksa_kehamilan = trim($this->input->post('id_edit_ibu'));
+        $query = $this->m_kehamilan->detail_periksa_by_id($id_periksa_kehamilan);
+        if ($query) {
+            $data = true;
+            $result = $query->row_array();
+            $msg = 'Data periksa kehamilan Berhasil ditemukan!';
+        } else {
+            $data = false;
+            $result = "";
+            $msg = 'Data periksa kehamilan Gagal ditemukan!';
+        }
+        echo json_encode([
+            'data'  => $data,
+            'result'    => $result,
+            'message' => $msg
         ]);
         die;
     }
