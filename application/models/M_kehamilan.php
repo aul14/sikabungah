@@ -39,7 +39,7 @@ class M_kehamilan extends CI_Model
                 LEFT JOIN SIKABUNGAH_KEHAMILAN_KE b ON b.ID_KEHAMILAN_KE = a.ID_KEHAMILAN_KE
                 WHERE a.ID_KEHAMILAN_KE = $id_kehamilan_ke
                 AND a.NORM = '$norm'";
-                return $this->db->query($sql);
+        return $this->db->query($sql);
     }
 
     public function store_hamil($norm, $nama, $alamat, $tgl_lahir, $kehamilan_ke, $tgl_akhir_mens)
@@ -62,6 +62,12 @@ class M_kehamilan extends CI_Model
     public function update_lahir($id_kehamilan_ke)
     {
         $sql = "UPDATE SIKABUNGAH_KEHAMILAN_KE SET STATUS = '1' WHERE ID_KEHAMILAN_KE = $id_kehamilan_ke";
+        return $this->db->query($sql);
+    }
+
+    public function hapus_periksa($id_periksa_kehamilan)
+    {
+        $sql = "DELETE FROM SIKABUNGAH_PERIKSA_KEHAMILAN WHERE ID_PERIKSA_KEHAMILAN = {$id_periksa_kehamilan}";
         return $this->db->query($sql);
     }
 }

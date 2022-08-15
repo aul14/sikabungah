@@ -40,6 +40,23 @@ date_default_timezone_set('Asia/Jakarta');
             border-bottom: 1px solid #d4d4d4;
             border-right: 1px solid #d4d4d4;
         }
+
+        .dataTables_scrollBody {
+            position: static !important;
+        }
+
+        div.dropdown {
+            position: static;
+        }
+
+        .datatable-scroll-wrap .dropdown.dropup.open .dropdown-menu {
+            display: flex;
+            overflow: visible !important;
+        }
+
+        .datatable-scroll-wrap .dropdown.dropup.open .dropdown-menu li a {
+            display: flex;
+        }
     </style>
 </head>
 
@@ -126,7 +143,7 @@ date_default_timezone_set('Asia/Jakarta');
                                         <div class="input-group-prepend custom">
                                             <div class="input-group-text" id="btnGroupAddon"><i class="icon-copy dw dw-search2"></i></div>
                                         </div>
-                                        <input type="text" class="form-control" id="norm_cari" name="norm_cari" placeholder="Nomor Medical Record" aria-label="Nomor Medical Record" aria-describedby="btnGroupAddon" oninput="this.value = this.value.replace(/[^0-9]/g, '');" autocomplete="off">
+                                        <input type="text" class="form-control" autofocus id="norm_cari" name="norm_cari" placeholder="Nomor Medical Record" aria-label="Nomor Medical Record" aria-describedby="btnGroupAddon" oninput="this.value = this.value.replace(/[^0-9]/g, '');" autocomplete="off">
                                         <button type="submit" class="btn btn-primary ml-2">Search</button>
                                     </div>
                                 </div>
@@ -224,6 +241,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                             <th class='text-center'>Berat Badan</th>
                                                             <th class='text-center'>Tinggi Badan</th>
                                                             <th class='text-center'>Tensi</th>
+                                                            <th class='text-center'>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="list_periksa"></tbody>
@@ -235,9 +253,12 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <table id="data_table_periksa_anak" class="data-table table stripe hover nowrap" width="100%">
                                                     <thead>
                                                         <tr>
+                                                            <th>Tgl. Periksa</th>
+                                                            <th>Minggu Kehamilan</th>
                                                             <th>Berat Badan Janin</th>
                                                             <th>Lingkar Kepala</th>
                                                             <th>Lingkar Perut</th>
+                                                            <th class='text-center'>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="list_periksa_anak"></tbody>
@@ -319,7 +340,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Tanggal Periksa</label>
                                                     <div class="col-sm-12 col-md-8">
-                                                        <input class="form-control" type="text" readonly placeholder="Tanggal Periksa" name="tgl_periksa" value="<?= date('Y-m-d'); ?>">
+                                                        <input class="form-control datetimepicker" type="text" placeholder="Tanggal Periksa" name="tgl_periksa" value="<?= date('d F Y g:i A'); ?>">
                                                     </div>
                                                 </div>
 
@@ -372,7 +393,7 @@ date_default_timezone_set('Asia/Jakarta');
                                         <div class="tab-pane fade show active" id="periksaanak" role="tabpanel">
                                             <div class="pd-20">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-12 col-md-2 col-form-label">TBJJ</label>
+                                                    <label class="col-sm-12 col-md-2 col-form-label">TBBJ</label>
                                                     <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected col-sm-12 col-md-10 my-0">
                                                         <input class="form-control" type="text" placeholder="Berat Badan Janin" name="berat_badan_janin">
                                                         <span class="input-group-addon group-span input-group-append">
@@ -481,8 +502,9 @@ date_default_timezone_set('Asia/Jakarta');
                 <div class="modal-body text-center font-18">
                     <h4 class="padding-top-30 mb-30 weight-500 text-judul">Are you sure you want to continue?</h4>
                     <div class="padding-bottom-30 row" style="max-width: 170px; margin: 0 auto;">
-                        <form action="<?= base_url('kehamilan/update_lahir'); ?>" class="update_lahir form-inline">
+                        <form action="<?= base_url('kehamilan/update_lahir'); ?>" class="form-confirm form-inline">
                             <input type="hidden" name="edit_id_kehamilan_ke">
+                            <input type="hidden" name="id_flexibel">
                             <input type="hidden" name="norm_edit">
                             <div class="col-6">
                                 <button type="button" class="btn btn-secondary border-radius-100 btn-block confirmation-btn" data-dismiss="modal"><i class="fa fa-times"></i></button>
@@ -540,6 +562,8 @@ date_default_timezone_set('Asia/Jakarta');
     <script src="<?= base_url(); ?>src/plugins/datatables/js/pdfmake.min.js"></script>
     <script src="<?= base_url(); ?>src/plugins/datatables/js/vfs_fonts.js"></script>
     <script>
+        var BASE_URL = '<?= base_url(); ?>';
+
         function data_periksa(id_kehamilan_ke, norm) {
             $.ajax({
                 type: "POST",
@@ -561,11 +585,37 @@ date_default_timezone_set('Asia/Jakarta');
                                 <td class='text-center'>${res.data_periksa[i].BERAT_BADAN} kg</td>
                                 <td class='text-center'>${res.data_periksa[i].TINGGI_BADAN} cm</td>
                                 <td class='text-center'>${res.data_periksa[i].TENSI} mmHg</td>
+                                <td class='text-center'>
+                                    <div class="dropdown">
+                                        <a class="btn btn-link font-24 p-0  line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                            <i class="dw dw-more"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                            <a class="dropdown-item btn-edit_ibu" data-id_edit_ibu="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-id_kehamilan_edit_ibu="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-norm_edit_ibu="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-edit2"></i> Edit</a>
+                                            
+                                            <a class="dropdown-item btn-hapus_ibu" data-id_kehamilan_hapus_ibu="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_hapus_ibu="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_hapus_ibu="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-trash"></i> Hapus</a>   
+                                        </div>
+                                    </div>
+                                </td>
                                 </tr>`;
                             html_tr_anak += `<tr>
+                                <td>${res.data_periksa[i].TGL_PERIKSA}</td>
+                                <td>${res.data_periksa[i].MINGGU_KE}</td>
                                 <td>${res.data_periksa[i].BERAT_BADAN_JANIN} gram</td>
                                 <td>${res.data_periksa[i].LINGKAR_KEPALA} cm</td>
                                 <td>${res.data_periksa[i].LINGKAR_PERUT} cm</td>
+                                <td class='text-center'>
+                                    <div class="dropdown">
+                                        <a class="btn btn-link font-24 p-0  line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                            <i class="dw dw-more"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                            <a class="dropdown-item btn-edit_anak" data-id_kehamilan_edit_anak="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_edit_anak="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_edit_anak="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-edit2"></i> Edit</a>
+                                            
+                                            <a class="dropdown-item btn-hapus_anak" data-id_kehamilan_hapus_anak="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_hapus_anak="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_hapus_anak="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-trash"></i> Hapus</a>   
+                                        </div>
+                                    </div>
+                                </td>
                                 </tr>`;
                         }
                     }
@@ -797,6 +847,196 @@ date_default_timezone_set('Asia/Jakarta');
                 }, 600);
             });
 
+            $(document).on('click', '.btn-hapus_ibu', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id_hapus_ibu');
+                let norm = $(this).data('norm_hapus_ibu');
+                let id_kehamilan_ke = $(this).data('id_kehamilan_hapus_ibu');
+
+                $(`#confirmation-modal`).modal('show');
+                $(`.text-judul`).html('Yakin data dihapus?');
+                $('#confirmation-modal form').removeClass('form-confirm');
+                $('#confirmation-modal form').addClass('form-hapus');
+                $(`.form-hapus`).attr('action', `${BASE_URL}kehamilan/hapus_periksa`);
+                $('#confirmation-modal form input[name=edit_id_kehamilan_ke]').attr('name', 'hapus_id');
+                $('#confirmation-modal form input[name=norm_edit]').attr('name', 'hapus_norm');
+                $('input[name=hapus_id]').val(id);
+                $('input[name=hapus_norm]').val(norm);
+                $('input[name=id_flexibel]').val(id_kehamilan_ke);
+
+                $(`.form-hapus`).submit(function(e) {
+                    e.preventDefault();
+                    let url_hapus = $(this).attr('action');
+                    $.ajax({
+                        type: "post",
+                        url: url_hapus,
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        async: false,
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.data == true) {
+                                $('#data_table_periksa').DataTable().clear();
+                                $('#data_table_periksa').DataTable().destroy();
+                                $('#data_table_periksa_anak').DataTable().clear();
+                                $('#data_table_periksa_anak').DataTable().destroy();
+                                data_periksa(response.id_kehamilan_ke, response.norm);
+                                init_datatable_periksa();
+
+                                $('.form-hapus')[0].reset();
+                                $(`#confirmation-modal`).modal('hide');
+
+                                $(".text_alert_success").html(response.message);
+                                $('#alert_modal_success').modal('show');
+                                setInterval(function() {
+                                    $('#alert_modal_success').modal('hide');
+                                }, 2000);
+
+                                $('html, body').animate({
+                                    scrollTop: $("#scroll_history").offset().top
+                                }, 600);
+
+                                $('#confirmation-modal form').removeClass('form-hapus ');
+                                $('#confirmation-modal form').addClass('form-confirm');
+                                $(`.form-confirm`).attr('action', `${BASE_URL}kehamilan/update_lahir`);
+                                $('#confirmation-modal form input[name=hapus_id]').attr('name', 'edit_id_kehamilan_ke');
+                                $('#confirmation-modal form input[name=hapus_norm]').attr('name', 'norm_edit');
+                                // return;
+                            } else {
+                                $(".text_alert_failed").html(response.message);
+                                $('#alert_modal_failed').modal('show');
+                                setInterval(function() {
+                                    $('#alert_modal_failed').modal('hide');
+                                }, 2000);
+
+                                $('#confirmation-modal form').removeClass('form-hapus ');
+                                $('#confirmation-modal form').addClass('form-confirm');
+                                $(`.form-confirm`).attr('action', `${BASE_URL}kehamilan/update_lahir`);
+                                $('#confirmation-modal form input[name=hapus_id]').attr('name', 'edit_id_kehamilan_ke');
+                                $('#confirmation-modal form input[name=hapus_norm]').attr('name', 'norm_edit');
+                                // return;
+                            }
+                        }
+                    });
+                });
+            });
+
+            $(document).on('click', '.btn-hapus_anak', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id_hapus_anak');
+                let norm = $(this).data('norm_hapus_anak');
+                let id_kehamilan_ke = $(this).data('id_kehamilan_hapus_anak');
+
+                $(`#confirmation-modal`).modal('show');
+                $(`.text-judul`).html('Yakin data dihapus?');
+                $('#confirmation-modal form').removeClass('form-confirm');
+                $('#confirmation-modal form').addClass('form-hapus');
+                $(`.form-hapus`).attr('action', `${BASE_URL}kehamilan/hapus_periksa`);
+                $('#confirmation-modal form input[name=edit_id_kehamilan_ke]').attr('name', 'hapus_id');
+                $('#confirmation-modal form input[name=norm_edit]').attr('name', 'hapus_norm');
+                $('input[name=hapus_id]').val(id);
+                $('input[name=hapus_norm]').val(norm);
+                $('input[name=id_flexibel]').val(id_kehamilan_ke);
+
+                $(`.form-hapus`).submit(function(e) {
+                    e.preventDefault();
+                    let url_hapus = $(this).attr('action');
+                    $.ajax({
+                        type: "post",
+                        url: url_hapus,
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        async: false,
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.data == true) {
+                                $('#data_table_periksa').DataTable().clear();
+                                $('#data_table_periksa').DataTable().destroy();
+                                $('#data_table_periksa_anak').DataTable().clear();
+                                $('#data_table_periksa_anak').DataTable().destroy();
+                                data_periksa(response.id_kehamilan_ke, response.norm);
+                                init_datatable_periksa();
+
+                                $('.form-hapus')[0].reset();
+                                $(`#confirmation-modal`).modal('hide');
+
+                                $(".text_alert_success").html(response.message);
+                                $('#alert_modal_success').modal('show');
+                                setInterval(function() {
+                                    $('#alert_modal_success').modal('hide');
+                                }, 2000);
+
+                                $('html, body').animate({
+                                    scrollTop: $("#scroll_history").offset().top
+                                }, 600);
+
+                                $('#confirmation-modal form').removeClass('form-hapus ');
+                                $('#confirmation-modal form').addClass('form-confirm');
+                                $(`.form-confirm`).attr('action', `${BASE_URL}kehamilan/update_lahir`);
+                                $('#confirmation-modal form input[name=hapus_id]').attr('name', 'edit_id_kehamilan_ke');
+                                $('#confirmation-modal form input[name=hapus_norm]').attr('name', 'norm_edit');
+                                // return;
+                            } else {
+                                $(".text_alert_failed").html(response.message);
+                                $('#alert_modal_failed').modal('show');
+                                setInterval(function() {
+                                    $('#alert_modal_failed').modal('hide');
+                                }, 2000);
+
+                                $('#confirmation-modal form').removeClass('form-hapus ');
+                                $('#confirmation-modal form').addClass('form-confirm');
+                                $(`.form-confirm`).attr('action', `${BASE_URL}kehamilan/update_lahir`);
+                                $('#confirmation-modal form input[name=hapus_id]').attr('name', 'edit_id_kehamilan_ke');
+                                $('#confirmation-modal form input[name=hapus_norm]').attr('name', 'norm_edit');
+                                // return;
+                            }
+                        }
+                    });
+                });
+            });
+
+            $(`.form-confirm`).submit(function(e) {
+                e.preventDefault();
+                let url_update = $(this).attr('action');
+                $.ajax({
+                    type: "post",
+                    url: url_update,
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.data == true) {
+                            $('.form-confirm')[0].reset();
+                            $(`#confirmation-modal`).modal('hide');
+                            $(".text_alert_success").html(response.message);
+                            $('#alert_modal_success').modal('show');
+                            setInterval(function() {
+                                $('#alert_modal_success').modal('hide');
+                            }, 2000);
+                            $('#data_table').DataTable().clear();
+                            $('#data_table').DataTable().destroy();
+                            data_kehamilan(response.norm);
+                            init_datatable();
+                        } else {
+                            $('.store_hamil')[0].reset();
+                            $(`#confirmation-modal`).modal('hide');
+                            $(".text_alert_failed").html(response.message);
+                            $('#alert_modal_failed').modal('show');
+                            setInterval(function() {
+                                $('#alert_modal_failed').modal('hide');
+                            }, 2000);
+                        }
+                    }
+                });
+            });
+
             $(document).on('click', '.btn-lahir', function(e) {
                 e.preventDefault();
                 let id = $(this).data('id_edit');
@@ -822,43 +1062,7 @@ date_default_timezone_set('Asia/Jakarta');
                 $(`#modal-kehamilan-ke`).modal('show');
             });
 
-            $(`.update_lahir`).submit(function(e) {
-                e.preventDefault();
-                let url_update = $(this).attr('action');
-                $.ajax({
-                    type: "post",
-                    url: url_update,
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    async: false,
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.data == true) {
-                            $('.update_lahir')[0].reset();
-                            $(`#confirmation-modal`).modal('hide');
-                            $(".text_alert_success").html(response.message);
-                            $('#alert_modal_success').modal('show');
-                            setInterval(function() {
-                                $('#alert_modal_success').modal('hide');
-                            }, 2000);
-                            $('#data_table').DataTable().clear();
-                            $('#data_table').DataTable().destroy();
-                            data_kehamilan(response.norm);
-                            init_datatable();
-                        } else {
-                            $('.store_hamil')[0].reset();
-                            $(`#confirmation-modal`).modal('hide');
-                            $(".text_alert_failed").html(response.message);
-                            $('#alert_modal_failed').modal('show');
-                            setInterval(function() {
-                                $('#alert_modal_failed').modal('hide');
-                            }, 2000);
-                        }
-                    }
-                });
-            });
+
 
             $(`.store_periksa`).submit(function(e) {
                 e.preventDefault();

@@ -16,7 +16,8 @@ class Kehamilan extends CI_Controller
     }
 
 
-    public function index() {
+    public function index()
+    {
         $data = array(
             "login_name" => $this->session->userdata('SIKABUNGAH_NAMA_USER')
         );
@@ -92,7 +93,7 @@ class Kehamilan extends CI_Controller
     {
         $id_kehamilan_ke = $this->input->post('id_kehamilan_ke');
         $norm_periksa = $this->input->post('norm_periksa');
-        $tgl_periksa = $this->input->post('tgl_periksa');
+        $tgl_periksa = date('Y-m-d H:i:s', strtotime($this->input->post('tgl_periksa')));
         $minggu_ke = $this->input->post('minggu_ke');
         $berat_badan = $this->input->post('berat_badan');
         $tinggi_badan = $this->input->post('tinggi_badan');
@@ -138,6 +139,29 @@ class Kehamilan extends CI_Controller
             'data'  => $data,
             'norm'  => $norm_edit,
             'message' => $msg,
+            'id_kehamilan_ke' => $id_kehamilan_ke
+        ]);
+        die;
+    }
+
+    public function hapus_periksa()
+    {
+        $id_periksa_kehamilan = trim($this->input->post('hapus_id'));
+        $norm = trim($this->input->post('hapus_norm'));
+        $id_kehamilan_ke = trim($this->input->post('id_flexibel'));
+
+        $query = $this->m_kehamilan->hapus_periksa($id_periksa_kehamilan);
+        if ($query) {
+            $data = true;
+            $msg = 'Data periksa kehamilan Berhasil dihapus!';
+        } else {
+            $data = false;
+            $msg = 'Data periksa kehamilan Gagal dihapus!';
+        }
+        echo json_encode([
+            'data'  => $data,
+            'message' => $msg,
+            'norm'    =>  $norm,
             'id_kehamilan_ke' => $id_kehamilan_ke
         ]);
         die;
