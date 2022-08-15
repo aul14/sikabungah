@@ -35,6 +35,7 @@ class M_kehamilan extends CI_Model
                     b.NAMA, 
                     b.ALAMAT, 
                     b.KEHAMILAN_KE,
+                    b.STATUS,
                     b.TGL_LAHIR 
                 FROM SIKABUNGAH_PERIKSA_KEHAMILAN a
                 LEFT JOIN SIKABUNGAH_KEHAMILAN_KE b ON b.ID_KEHAMILAN_KE = a.ID_KEHAMILAN_KE

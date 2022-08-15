@@ -587,7 +587,7 @@ date_default_timezone_set('Asia/Jakarta');
                                 <td class='text-center'>${res.data_periksa[i].TINGGI_BADAN} cm</td>
                                 <td class='text-center'>${res.data_periksa[i].TENSI} mmHg</td>
                                 <td class='text-center'>
-                                    <div class="dropdown">
+                                ${(res.data_periksa[i].STATUS == 0) ? `<div class="dropdown">
                                         <a class="btn btn-link font-24 p-0  line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                                             <i class="dw dw-more"></i>
                                         </a>
@@ -596,7 +596,8 @@ date_default_timezone_set('Asia/Jakarta');
                                             
                                             <a class="dropdown-item btn-hapus_ibu" data-id_kehamilan_hapus_ibu="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_hapus_ibu="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_hapus_ibu="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-trash"></i> Hapus</a>   
                                         </div>
-                                    </div>
+                                    </div>` : `-`}
+                                   
                                 </td>
                                 </tr>`;
                             html_tr_anak += `<tr>
@@ -606,7 +607,7 @@ date_default_timezone_set('Asia/Jakarta');
                                 <td>${res.data_periksa[i].LINGKAR_KEPALA} cm</td>
                                 <td>${res.data_periksa[i].LINGKAR_PERUT} cm</td>
                                 <td class='text-center'>
-                                    <div class="dropdown">
+                                ${(res.data_periksa[i].STATUS == 0) ? `<div class="dropdown">
                                         <a class="btn btn-link font-24 p-0  line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                                             <i class="dw dw-more"></i>
                                         </a>
@@ -615,7 +616,8 @@ date_default_timezone_set('Asia/Jakarta');
                                             
                                             <a class="dropdown-item btn-hapus_anak" data-id_kehamilan_hapus_anak="${res.data_periksa[i].ID_KEHAMILAN_KE}" data-id_hapus_anak="${res.data_periksa[i].ID_PERIKSA_KEHAMILAN}" data-norm_hapus_anak="${res.data_periksa[i].NORM}" href="javascript:void(0)"><i class="dw dw-trash"></i> Hapus</a>   
                                         </div>
-                                    </div>
+                                    </div>` : `-`}
+                                  
                                 </td>
                                 </tr>`;
                         }
@@ -1025,6 +1027,12 @@ date_default_timezone_set('Asia/Jakarta');
                             $('#data_table').DataTable().destroy();
                             data_kehamilan(response.norm);
                             init_datatable();
+                            $('#data_table_periksa').DataTable().clear();
+                            $('#data_table_periksa').DataTable().destroy();
+                            $('#data_table_periksa_anak').DataTable().clear();
+                            $('#data_table_periksa_anak').DataTable().destroy();
+                            data_periksa(response.id_kehamilan_ke, response.norm);
+                            init_datatable_periksa();
                         } else {
                             $('.store_hamil')[0].reset();
                             $(`#confirmation-modal`).modal('hide');
