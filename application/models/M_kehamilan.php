@@ -29,7 +29,7 @@ class M_kehamilan extends CI_Model
                     a.ID_PERIKSA_KEHAMILAN,
                     a.ID_KEHAMILAN_KE,
                     a.NORM,
-                    CONVERT(CHAR( 20 ), a.TGL_PERIKSA, 103) AS TGL_PERIKSA,
+                    CONVERT(CHAR( 20 ), a.TGL_PERIKSA, 121) AS TGL_PERIKSA,
                     a.MINGGU_KE,
                     a.BERAT_BADAN,
                     a.TINGGI_BADAN,
@@ -60,7 +60,6 @@ class M_kehamilan extends CI_Model
 
     public function store_periksa($id_kehamilan_ke, $norm, $tgl_periksa, $minggu_ke, $berat_badan, $tinggi_badan, $tensi, $berat_badan_janin, $lingkar_kepala, $lingkar_perut)
     {
-        $tgl_periksa = date('Y-m-d');
         $sql = "INSERT INTO SIKABUNGAH_PERIKSA_KEHAMILAN (ID_KEHAMILAN_KE, NORM, TGL_PERIKSA, MINGGU_KE, BERAT_BADAN, TINGGI_BADAN, TENSI, BERAT_BADAN_JANIN, LINGKAR_KEPALA, LINGKAR_PERUT, CREATE_DATE)
         VALUES ($id_kehamilan_ke, '$norm', '$tgl_periksa', '$minggu_ke', $berat_badan, $tinggi_badan, '$tensi', $berat_badan_janin, $lingkar_kepala, $lingkar_perut, getdate())";
 

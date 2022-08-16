@@ -584,7 +584,7 @@ date_default_timezone_set('Asia/Jakarta');
                         let no = 1;
                         for (let i = 0; i < res.data_periksa.length; i++) {
                             html_tr += `<tr>
-                                <td class='text-center'>${res.data_periksa[i].TGL_PERIKSA}</td>
+                                <td class='text-center'>${moment(res.data_periksa[i].TGL_PERIKSA).format('DD-MMMM-YYYY H:mm')}</td>
                                 <td class='text-center'>${res.data_periksa[i].MINGGU_KE}</td>
                                 <td class='text-center'>${res.data_periksa[i].BERAT_BADAN} kg</td>
                                 <td class='text-center'>${res.data_periksa[i].TINGGI_BADAN} cm</td>
@@ -604,7 +604,7 @@ date_default_timezone_set('Asia/Jakarta');
                                 </td>
                                 </tr>`;
                             html_tr_anak += `<tr>
-                                <td>${res.data_periksa[i].TGL_PERIKSA}</td>
+                                <td>${moment(res.data_periksa[i].TGL_PERIKSA).format('DD-MMMM-YYYY H:mm')}</td>
                                 <td>${res.data_periksa[i].MINGGU_KE}</td>
                                 <td>${res.data_periksa[i].BERAT_BADAN_JANIN} gram</td>
                                 <td>${res.data_periksa[i].LINGKAR_KEPALA} cm</td>

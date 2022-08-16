@@ -93,7 +93,7 @@ class Kehamilan extends CI_Controller
     {
         $id_kehamilan_ke = $this->input->post('id_kehamilan_ke');
         $norm_periksa = $this->input->post('norm_periksa');
-        $tgl_periksa = date('Y-m-d H:i', strtotime($this->input->post('tgl_periksa')));
+        $tgl_periksa = date('Y-m-d H:i:s', strtotime($this->input->post('tgl_periksa')));
         $minggu_ke = $this->input->post('minggu_ke');
         $berat_badan = $this->input->post('berat_badan');
         $tinggi_badan = $this->input->post('tinggi_badan');
