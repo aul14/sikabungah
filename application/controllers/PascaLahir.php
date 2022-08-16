@@ -73,8 +73,8 @@ class PascaLahir extends CI_Controller {
 										<i class='dw dw-more'></i>
 									</a>
 									<div class='dropdown-menu dropdown-menu-right dropdown-menu-icon-list'>
-										<a class='dropdown-item' href='javascript:void(0)' onclick='set_history(".$get_id_anak.")'><i class='icon-copy dw dw-list'></i></i> Histori</a>
-										<a class='dropdown-item' href='javascript:void(0)' data-toggle='modal' data-target='#modal_periksa_anak' onclick='set_periksa(".$get_id_anak.")'><i class='dw dw-edit2'></i> Periksa</a>
+										<a class='dropdown-item' href='javascript:void(0)' onclick='set_history(".$anak_ke.")'><i class='icon-copy dw dw-list'></i></i> Histori</a>
+										<a class='dropdown-item' href='javascript:void(0)' data-toggle='modal' data-target='#modal_periksa_anak' onclick='set_periksa(".$get_id_anak.", ".$anak_ke.")'><i class='dw dw-edit2'></i> Periksa</a>
 										<a class='dropdown-item' href='javascript:void(0)' onclick='set_grafik(".$anak_ke.", ".$jekel_anak_let.")'><i class='icon-copy dw dw-analytics1'></i></i> Grafik</a>
 									</div>
 								</div>
@@ -174,8 +174,8 @@ class PascaLahir extends CI_Controller {
 												<i class='dw dw-more'></i>
 											</a>
 											<div class='dropdown-menu dropdown-menu-right dropdown-menu-icon-list'>
-												<a class='dropdown-item' href='javascript:void(0)' onclick='set_history(".$get_id_anak.")'><i class='icon-copy dw dw-list'></i></i> Histori</a>
-												<a class='dropdown-item' href='javascript:void(0)' data-toggle='modal' data-target='#modal_periksa_anak' onclick='set_periksa(".$get_id_anak.")'><i class='dw dw-edit2'></i> Periksa</a>
+												<a class='dropdown-item' href='javascript:void(0)' onclick='set_history(".$anak_ke.")'><i class='icon-copy dw dw-list'></i></i> Histori</a>
+												<a class='dropdown-item' href='javascript:void(0)' data-toggle='modal' data-target='#modal_periksa_anak' onclick='set_periksa(".$get_id_anak.", ".$anak_ke.")'><i class='dw dw-edit2'></i> Periksa</a>
 												<a class='dropdown-item' href='javascript:void(0)' onclick='set_grafik(".$anak_ke.", ".$jekel_anak_let.")'><i class='icon-copy dw dw-analytics1'></i></i> Grafik</a>
 											</div>
 										</div>
@@ -257,14 +257,19 @@ class PascaLahir extends CI_Controller {
 					$jekel_anak 	= $row_history['JNS_KELAMIN'];
 					$anak_ke 		= $row_history['ANAK_KE'];
 					$tanggal_priksa = date( "Y-m-d", strtotime($row_history['TGL_PERIKSA']));
+					$jam_periksa 	= date( "H:i:s", strtotime($row_history['TGL_PERIKSA']));
 					$bb_anak 		= $row_history['BERAT_BADAN'];
 					$tb_anak 		= $row_history['TINGGI_BADAN'];
 
 					$data_html = $data_html."
 					<tr>
-						<td class='text-center'>".$tanggal_priksa."</td>
+						<td class='text-center small'>".$tanggal_priksa."<br>".$jam_periksa."</td>
 						<td class='text-center'>".$bb_anak." Kg</td>
 						<td class='text-center'>".$tb_anak." Cm</td>
+						<td class='text-center'>
+							<a href='javascript:void(0)' class='badge badge-info m-0 text-white' style='cursor:pointer' onclick='action_edit_periksa(".$get_id_anak.")'><i class='icon-copy dw dw-edit2'></i></a>
+							<a href='javascript:void(0)' class='badge badge-danger m-0 text-white' style='cursor:pointer' onclick='action_del_periksa(".$get_id_anak.")'><i class='icon-copy dw dw-trash1'></i></a>
+						</td>
 					</tr>
 					";
 				}
@@ -302,6 +307,108 @@ class PascaLahir extends CI_Controller {
 		}
 		else {
 			$data = array('status' => 0, 'message' => 'Data NORM atau ID anak tidak ditemukan!');
+		}
+
+		echo json_encode($data);
+	}
+
+	public function periksa_anak_by_idperiksa() {
+		$idperiksa 	= $this->input->post('idperiksa');
+
+		if ($idperiksa != "") {
+			$m_query_history = $this->model_pascalahir->m_pascaLahir_periksa_anak_by_idperiksa($idperiksa);
+			$patchData_history 	= $m_query_history->result_array();
+			$countData_history 	= $m_query_history->num_rows();
+
+			if ($countData_history > 0) {
+				$nomor = 0;
+				$data_html = "";
+				foreach ($patchData_history as $row_history) {
+					$nomor 			= $nomor + 1;
+					$get_id_anak 	= $row_history['ID_PERIKSA_ANAK'];
+					$norm_ibu 		= $row_history['NORM_IBU'];
+					$nama_anak 		= ucwords(trim($row_history['NAMA']));
+					$tanggal_lahir 	= date( "d/m/Y", strtotime($row_history['TGL_LAHIR']));
+					$jekel_anak 	= $row_history['JNS_KELAMIN'];
+					$anak_ke 		= $row_history['ANAK_KE'];
+					$tanggal_priksa = date( "Y-m-d H:i:s", strtotime($row_history['TGL_PERIKSA']));
+					$bb_anak 		= $row_history['BERAT_BADAN'];
+					$tb_anak 		= $row_history['TINGGI_BADAN'];
+				}
+
+				$data = array(
+					'status' 			=> 1, 
+					'message' 			=> 'found data',
+					'tanggal_priksa' 	=> $tanggal_priksa,
+					'bb_anak' 			=> $bb_anak,
+					'tb_anak' 			=> $tb_anak
+				);
+			}
+			else {
+				$data = array('status' => 0, 'message' => 'Data pemeriksaan tidak ditemukan!');
+			}
+		}
+		else {
+			$data = array('status' => 0, 'message' => 'Data NORM atau ID anak tidak ditemukan!');
+		}
+
+		echo json_encode($data);
+	}
+
+	public function update_periksa() {
+		$id_edit_periksa 		= $this->input->post('id_edit_periksa');
+		$edit_anakke_periksa 	= $this->input->post('edit_anakke_periksa');
+		$tanggal_periksa 		= $this->input->post('edit_tanggal_periksa');
+		$bb_anak 				= $this->input->post('edit_bb_anak');
+		$tb_anak 				= $this->input->post('edit_tb_anak');
+
+		if ($id_edit_periksa != "" && $edit_anakke_periksa != "") {
+			if ($tanggal_periksa != "" && $bb_anak != "" && $tb_anak != "") {
+				$m_query = $this->model_pascalahir->m_update_periksa_anak($id_edit_periksa, $bb_anak, $tb_anak);
+
+				if ($m_query == NULL) {
+					$data = array('status' => 0, 'message' => 'Data pemeriksaan gagal terupdate!');
+				}
+				else {
+					$data = array(
+						'status' => 1, 
+						'message' => 'Data pemeriksaan berhasil terupdate! Terimakasih.',
+						'anak_ke' => $edit_anakke_periksa
+					);
+				}
+			}
+			else {
+				$data = array('status' => 0, 'message' => 'Data formulir pemeriksaan tidak boleh kosong!');
+			}
+		}
+		else {
+			$data = array('status' => 0, 'message' => 'Data ID Pemeriksaan atau ID anak tidak ditemukan!');
+		}
+
+		echo json_encode($data);
+	}
+
+	public function delete_periksa() {
+		$idperiksa 	= $this->input->post('idperiksa');
+		$id_anak 	= $this->input->post('id_anak');
+
+		if ($idperiksa != "") {
+			if ($id_anak != "") {
+				$m_statDelete 	= $this->model_pascalahir->m_delete_periksa($idperiksa);
+
+				if ($m_statDelete == NULL) {
+					$data = array('status' => 0, 'message' => 'Data pemeriksaan gagal terhapus!');
+				}
+				else {
+					$data = array('status' => 1, 'message' => 'Hapus data berhasil!');
+				}
+			}
+			else {
+				$data = array('status' => 0, 'message' => 'Data ID Anak tidak ditemukan!');
+			}
+		}
+		else {
+			$data = array('status' => 0, 'message' => 'Data ID Pemeriksaan tidak ditemukan!');
 		}
 
 		echo json_encode($data);

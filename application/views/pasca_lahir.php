@@ -169,6 +169,7 @@ date_default_timezone_set('Asia/Jakarta');
 										<th class="text-center">Tanggal Periksa</th>
 										<th class="text-center">Berat Badan</th>
 										<th class="text-center">Tinggi Badan</th>
+										<th class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody id="tbody_history_periksa">
@@ -288,9 +289,10 @@ date_default_timezone_set('Asia/Jakarta');
 					<form id="formperiksaanak" method="POST" autocomplete="off">
 						<input type="hidden" class="form-control form-control-lg" id="norm_periksa_anak" name="norm_periksa_anak" readonly>
 						<input type="hidden" class="form-control form-control-lg" id="id_anak" name="id_anak" readonly>
+						<input type="hidden" class="form-control form-control-lg" id="anak_ke_periksa" name="anak_ke_periksa" readonly>
 						<label for="tanggal_periksa">Tanggal Periksa</label>
 						<div class="input-group custom mb-3">
-							<input class="form-control date-picker" id="tanggal_periksa" name="tanggal_periksa" placeholder="Select Date" type="text" value="<?php echo date('Y-m-d');?>">
+							<input class="form-control datetimepicker" id="tanggal_periksa" name="tanggal_periksa" placeholder="Select Date" type="text" value="<?php echo date('Y-m-d H:i:s');?>">
 							<div class="input-group-append custom">
 								<span class="input-group-text"><i class="icon-copy dw dw-calendar-1"></i></span>
 							</div>
@@ -313,6 +315,52 @@ date_default_timezone_set('Asia/Jakarta');
 							<div class="col-sm-12">
 								<div class="input-group mb-0">
 									<input class="btn btn-primary btn-lg btn-block mt-3 btn-periksa-anak" type="button" value="Simpan">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal edit periksa -->
+	<div class="modal fade" id="modal_edit_periksa_anak" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myLargeModalLabel">Edit Pemeriksaan Anak</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">
+					<form id="formeditperiksaanak" method="POST" autocomplete="off">
+						<input type="hidden" class="form-control form-control-lg" id="id_edit_periksa" name="id_edit_periksa" readonly>
+						<input type="hidden" class="form-control form-control-lg" id="edit_anakke_periksa" name="edit_anakke_periksa" readonly>
+						<label for="tanggal_periksa">Tanggal Periksa</label>
+						<div class="input-group custom mb-3">
+							<input class="form-control" id="edit_tanggal_periksa" name="edit_tanggal_periksa" placeholder="Select Date" type="text" readonly>
+							<div class="input-group-append custom">
+								<span class="input-group-text"><i class="icon-copy dw dw-calendar-1"></i></span>
+							</div>
+						</div>
+						<label for="bb_anak">Berat badan Anak (Kg)</label>
+						<div class="input-group custom mb-3">
+							<input type="text" class="form-control form-control-lg" id="edit_bb_anak" name="edit_bb_anak" placeholder="Berat Badan Anak" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
+							<div class="input-group-append custom">
+								<span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
+							</div>
+						</div>
+						<label for="tb_anak">Tinggi badan Anak (Cm)</label>
+						<div class="input-group custom mb-3">
+							<input type="text" class="form-control form-control-lg" id="edit_tb_anak" name="edit_tb_anak" placeholder="Tinggi Badan Anak" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
+							<div class="input-group-append custom">
+								<span class="input-group-text"><i class="icon-copy dw dw-user-3"></i></span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="input-group mb-0">
+									<input class="btn btn-primary btn-lg btn-block mt-3 btn-edit-periksa-anak" type="button" value="Update">
 								</div>
 							</div>
 						</div>
@@ -410,6 +458,29 @@ date_default_timezone_set('Asia/Jakarta');
 					<h3 class="mb-20">Successfully!</h3>
 					<div class="mb-30 text-center"><img src="vendors/images/success.png"></div>
 					<span class="text_alert_success_interval">Testing alert modal</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- cofirm modal -->
+	<div class="modal fade" id="modal_delete_periksa" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-body text-center font-18">
+					<h4 class="padding-top-30 mb-30 weight-500">Yakin hapus data pemeriksaan?</h4>
+					<input type="hidden" class="form-control form-control-lg" id="id_periksa" name="id_periksa" readonly>
+					<input type="hidden" class="form-control form-control-lg" id="id_anak_del" name="id_anak_del" readonly>
+					<div class="padding-bottom-30 row" style="max-width: 170px; margin: 0 auto;">
+						<div class="col-6">
+							<button type="button" class="btn btn-secondary border-radius-100 btn-block confirmation-btn" data-dismiss="modal"><i class="fa fa-times"></i></button>
+							TIDAK
+						</div>
+						<div class="col-6">
+							<button type="button" class="btn btn-primary border-radius-100 btn-block confirmation-btn btn-confirm-del-ya" data-dismiss="modal"><i class="fa fa-check"></i></button>
+							YA
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -529,27 +600,98 @@ date_default_timezone_set('Asia/Jakarta');
 	        });
 
 	        $(".btn-periksa-anak").click(function(){
-				var dataform = $("#formperiksaanak").serialize();
-	        	$.ajax({
+				var dataform 		= $("#formperiksaanak").serialize();
+				var anak_ke_periksa = $("#anak_ke_periksa").val();
+
+				if (anak_ke_periksa === "") {
+					$(".text_alert_danger").html("Data ID anak tidak ditemukan!");
+			        $('#alert_modal_danger').modal('show');
+				}
+				else {
+					$.ajax({
+		        		type        : "POST",
+		        		url         : "<?php echo base_url('pascalahir/periksa_anak')?>",
+		        		dataType    : "JSON",
+		        		data 		: dataform,
+		        		beforeSend: function() {
+		        			$(".btn-periksa-anak").prop("disabled", true);
+		        		},
+		        		success: function(data) {
+			        		$(".btn-periksa-anak").prop("disabled", false);
+		        			if (data.status === 1) {
+		        				$('#modal_periksa_anak').modal('hide');
+			        			$(".text_alert_success").html(data.message);
+			        			$('#alert_modal_success').modal('show');
+
+			        			$("#formperiksaanak")[0].reset();
+
+			        			set_history(anak_ke_periksa);
+			        		}
+			        		else {
+			        			$(".text_alert_danger").html(data.message);
+			        			$('#alert_modal_danger').modal('show');
+			        		}
+		        		}
+		        	})
+				}
+	        });
+
+	        $(".btn-edit-periksa-anak").click(function(){
+				var dataform = $("#formeditperiksaanak").serialize();
+				$.ajax({
 	        		type        : "POST",
-	        		url         : "<?php echo base_url('pascalahir/periksa_anak')?>",
+	        		url         : "<?php echo base_url('pascalahir/update_periksa')?>",
 	        		dataType    : "JSON",
 	        		data 		: dataform,
 	        		beforeSend: function() {
-	        			$(".btn-periksa-anak").prop("disabled", true);
+	        			$(".btn-edit-periksa-anak").prop("disabled", true);
 	        		},
 	        		success: function(data) {
-		        		$(".btn-periksa-anak").prop("disabled", false);
+		        		$(".btn-edit-periksa-anak").prop("disabled", false);
 	        			if (data.status === 1) {
-	        				$('#modal_periksa_anak').modal('hide');
+	        				$('#modal_edit_periksa_anak').modal('hide');
 		        			$(".text_alert_success").html(data.message);
 		        			$('#alert_modal_success').modal('show');
 
-		        			$("#formperiksaanak")[0].reset();
+		        			$("#formeditperiksaanak")[0].reset();
 
-		        			set_history($("#id_anak").val());
+		        			set_history(data.anak_ke);
 		        		}
 		        		else {
+		        			$(".text_alert_danger").html(data.message);
+		        			$('#alert_modal_danger').modal('show');
+		        		}
+	        		}
+	        	})
+	        });
+
+	        $(".btn-confirm-del-ya").click(function(){
+				var id_periksa 	= $("#id_periksa").val();
+				var id_anak_del = $("#id_anak_del").val();
+
+	        	$.ajax({
+	        		type        : "POST",
+	        		url         : "<?php echo base_url('pascalahir/delete_periksa')?>",
+	        		dataType    : "JSON",
+	        		data 		: {idperiksa : id_periksa, id_anak : id_anak_del},
+	        		beforeSend: function() {
+	        			$(".btn-confirm-del-ya").prop("disabled", true);
+	        		},
+	        		success: function(data) {
+		        		$(".btn-confirm-del-ya").prop("disabled", false);
+		        		console.log(data);
+	        			if (data.status === 1) {
+	        				$('#modal_delete_periksa').modal('hide');
+		        			$(".text_alert_success_interval").html(data.message);
+		        			$('#alert_modal_success_interval').modal('show');
+		        			setInterval(function() { 
+		        				$('#alert_modal_success_interval').modal('hide');
+							}, 1100);
+
+		        			set_history(id_anak_del);
+		        		}
+		        		else {
+		        			$('#modal_delete_periksa').modal('hide');
 		        			$(".text_alert_danger").html(data.message);
 		        			$('#alert_modal_danger').modal('show');
 		        		}
@@ -564,9 +706,11 @@ date_default_timezone_set('Asia/Jakarta');
 			});
 		});
 
-		function set_periksa($id) {
+		function set_periksa($id, $anak_ke) {
 			$("#id_anak").val($id);
-			$("#tanggal_periksa").val("<?php echo date('Y-m-d');?>");
+			$("#anak_ke_periksa").val($anak_ke);
+			$("#edit_anakke_periksa").val($anak_ke);
+			$("#tanggal_periksa").val("<?php echo date('Y-m-d H:i:s');?>");
 		}
 
 		function initiatDTableAnak() {
@@ -629,6 +773,8 @@ date_default_timezone_set('Asia/Jakarta');
         			if (data.status === 1) {
         				$('.nama_anak_histori').text(data.name);
         				$('.anakke_histori').text(" - (anak ke " + data.anak_ke + ")");
+        				$("#id_anak_del").val(data.anak_ke);
+        				$("#edit_anakke_periksa").val(data.anak_ke);
         				$('.lahir_anak_histori').text(data.tgl_lahir);
         				$('.jekel_anak_histori').text(data.jenis_kelamin);
         				$('#data_table_histori').DataTable().clear();
@@ -677,6 +823,36 @@ date_default_timezone_set('Asia/Jakarta');
 			}, 1500);
 
 			$('#modal_chart_periksa_anak').modal('show');
+		}
+
+		function action_del_periksa($id) {
+			$("#id_periksa").val($id);
+			$('#modal_delete_periksa').modal('show');
+		}
+
+		function action_edit_periksa($id) {
+			$("#id_edit_periksa").val($id);
+			$.ajax({
+        		type        : "POST",
+        		url         : "<?php echo base_url('pascalahir/periksa_anak_by_idperiksa')?>",
+        		dataType    : "JSON",
+        		data 		: {idperiksa : $id},
+        		beforeSend: function() {
+        			// 
+        		},
+        		success: function(data) {
+        			if (data.status === 1) {
+        				$("#edit_tanggal_periksa").val(data.tanggal_priksa);
+        				$("#edit_bb_anak").val(data.bb_anak);
+        				$("#edit_tb_anak").val(data.tb_anak);
+						$('#modal_edit_periksa_anak').modal('show');
+	        		}
+	        		else {
+	        			$(".text_alert_danger").html(data.message);
+	        			$('#alert_modal_danger').modal('show');
+	        		}
+        		}
+        	})
 		}
 	</script>
 </body>

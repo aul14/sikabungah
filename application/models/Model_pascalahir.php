@@ -77,7 +77,7 @@ class Model_pascalahir extends CI_Model{
 				CREATE_DATE
 			FROM SIKABUNGAH_ANAK_KE 
 			WHERE NORM_IBU = '$get_norm'
-			AND ID_ANAK_KE = $getid"
+			AND ANAK_KE = '$getid'"
 		);
 
     	return $sql_anak_ke;
@@ -104,8 +104,7 @@ class Model_pascalahir extends CI_Model{
 			FROM SIKABUNGAH_PERIKSA_ANAK 
 			LEFT JOIN SIKABUNGAH_ANAK_KE ON (SIKABUNGAH_PERIKSA_ANAK.ID_ANAK_KE = SIKABUNGAH_ANAK_KE.ID_ANAK_KE)
 			WHERE SIKABUNGAH_PERIKSA_ANAK.NORM_IBU = '$get_norm'
-			AND SIKABUNGAH_PERIKSA_ANAK.ID_ANAK_KE = $getid
-			-- ORDER BY CONVERT(VARCHAR, SIKABUNGAH_PERIKSA_ANAK.TGL_PERIKSA, 23) DESC"
+			AND SIKABUNGAH_ANAK_KE.ANAK_KE = '$getid'"
 		);
 
     	return $sql_periksa;
@@ -122,6 +121,47 @@ class Model_pascalahir extends CI_Model{
         $sql = "INSERT INTO SIKABUNGAH_PERIKSA_ANAK (NORM_IBU, ID_ANAK_KE, TGL_PERIKSA, BERAT_BADAN, TINGGI_BADAN, CREATE_DATE)
 					VALUES ('$norm_periksa_anak', $id_anak, '$tanggal_periksa', $bb_anak, $tb_anak, getdate())";
 		
+		return $this->db->query($sql);
+    }
+
+    function m_delete_periksa($id) {
+		$sql = "DELETE FROM SIKABUNGAH_PERIKSA_ANAK WHERE ID_PERIKSA_ANAK = $id";
+		
+		return $this->db->query($sql);
+	}
+
+	function m_pascaLahir_periksa_anak_by_idperiksa($getid) {
+    	$sql_periksa = 
+    	$this->db->query(
+    		"SELECT 
+				SIKABUNGAH_PERIKSA_ANAK.ID_PERIKSA_ANAK,
+				SIKABUNGAH_PERIKSA_ANAK.ID_ANAK_KE,
+				SIKABUNGAH_PERIKSA_ANAK.NORM_IBU,
+				SIKABUNGAH_PERIKSA_ANAK.TGL_PERIKSA,
+				SIKABUNGAH_PERIKSA_ANAK.BERAT_BADAN,
+				SIKABUNGAH_PERIKSA_ANAK.TINGGI_BADAN,
+				SIKABUNGAH_ANAK_KE.NAMA,
+				SIKABUNGAH_ANAK_KE.TGL_LAHIR,
+				CASE
+					WHEN SIKABUNGAH_ANAK_KE.JNS_KELAMIN = 'L' THEN 'Laki-Laki'
+					WHEN SIKABUNGAH_ANAK_KE.JNS_KELAMIN = 'P' THEN 'Perempuan'
+					ELSE 'Kosong'
+				END AS JNS_KELAMIN,
+				SIKABUNGAH_ANAK_KE.ANAK_KE
+			FROM SIKABUNGAH_PERIKSA_ANAK 
+			LEFT JOIN SIKABUNGAH_ANAK_KE ON (SIKABUNGAH_PERIKSA_ANAK.ID_ANAK_KE = SIKABUNGAH_ANAK_KE.ID_ANAK_KE)
+			WHERE SIKABUNGAH_PERIKSA_ANAK.ID_PERIKSA_ANAK = $getid"
+		);
+
+    	return $sql_periksa;
+    }
+
+    function m_update_periksa_anak($id_periksa, $bb_anak, $tb_anak) {
+        $sql = "UPDATE SIKABUNGAH_PERIKSA_ANAK 
+					SET BERAT_BADAN 		= $bb_anak,
+						TINGGI_BADAN		= $tb_anak
+					WHERE ID_PERIKSA_ANAK	= $id_periksa";
+					
 		return $this->db->query($sql);
     }
 }

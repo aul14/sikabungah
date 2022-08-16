@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<div class="main-container">
 		<div class="pd-ltr-20">
-			<div class="card-box pd-20 height-100-p mb-30">
+			<div class="card-box pd-20 height-100-p mb-30 animated fadeIn">
 				<div class="row align-items-center">
 					<div class="col-md-4">
 						<img src="<?php echo base_url();?>/vendors/images/banner-img.png" alt="">
