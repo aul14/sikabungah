@@ -341,7 +341,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Tanggal Periksa</label>
                                                     <div class="col-sm-12 col-md-8">
-                                                        <input class="form-control datetimepicker" type="text" placeholder="Tanggal Periksa" name="tgl_periksa" value="<?= date('d F Y g:i A'); ?>">
+                                                        <input class="form-control tglwaktupicker" type="text" placeholder="Tanggal Periksa" name="tgl_periksa" value="<?= date('Y-m-d H:i'); ?>">
                                                     </div>
                                                 </div>
 
@@ -562,6 +562,9 @@ date_default_timezone_set('Asia/Jakarta');
     <script src="<?= base_url(); ?>src/plugins/datatables/js/buttons.flash.min.js"></script>
     <script src="<?= base_url(); ?>src/plugins/datatables/js/pdfmake.min.js"></script>
     <script src="<?= base_url(); ?>src/plugins/datatables/js/vfs_fonts.js"></script>
+
+    <script src="<?= base_url(); ?>vendors/gijgo-combined-1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="<?= base_url(); ?>vendors/gijgo-combined-1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
     <script>
         var BASE_URL = '<?= base_url(); ?>';
 
@@ -785,6 +788,12 @@ date_default_timezone_set('Asia/Jakarta');
 
 
         $(function() {
+            $(".tglwaktupicker").datetimepicker({
+                footer: true,
+                modal: true,
+                format: 'yyyy-mm-dd HH:MM'
+            });
+
             init_datatable();
             init_datatable_periksa();
 
@@ -1064,6 +1073,19 @@ date_default_timezone_set('Asia/Jakarta');
                 $(`#modal-periksa`).modal('show');
                 $('input[name=id_kehamilan_ke]').val(id_hamil);
                 $('.text-periksa').html(`Periksa Kehamilan ke ${kehamilan_ke}`);
+
+                $.ajax({
+                    type: "post",
+                    url: `${BASE_URL}kehamilan/cek_tinggi_badan`,
+                    data: {
+                        id: id_hamil,
+                        norm: norm
+                    },
+                    dataType: "json",
+                    success: function(res) {
+                        $(`input[name=tinggi_badan]`).val(res.result['TINGGI_BADAN']);
+                    }
+                });
             });
 
             $(document).on('click', '.btn-edit_ibu', function(e) {

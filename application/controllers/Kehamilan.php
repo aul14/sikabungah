@@ -248,6 +248,29 @@ class Kehamilan extends CI_Controller
         ]);
         die;
     }
+
+    public function cek_tinggi_badan()
+    {
+        $id = trim($this->input->post('id'));
+        $norm = trim($this->input->post('norm'));
+
+        $query = $this->m_kehamilan->data_cek_tinggi_badan($id, $norm);
+        if ($query) {
+            $data = true;
+            $result = $query->row_array();
+            $msg = 'Data periksa kehamilan tinggi badan Berhasil ditemukan!';
+        } else {
+            $data = false;
+            $result = "";
+            $msg = 'Data periksa kehamilan tinggi badan Gagal ditemukan!';
+        }
+        echo json_encode([
+            'data'  => $data,
+            'result'    => $result,
+            'message' => $msg
+        ]);
+        die;
+    }
 }
 
 /* End of file Kehamilan.php */

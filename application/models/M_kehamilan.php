@@ -17,6 +17,12 @@ class M_kehamilan extends CI_Model
         return $this->db->query($query);
     }
 
+    public function data_cek_tinggi_badan($id_kehamilan_ke, $norm)
+    {
+        $query = "SELECT TOP 1 TINGGI_BADAN FROM SIKABUNGAH_PERIKSA_KEHAMILAN WHERE ID_KEHAMILAN_KE = $id_kehamilan_ke AND NORM = '$norm' ORDER BY CREATE_DATE DESC";
+        return $this->db->query($query);
+    }
+
     public function listing_periksa($id_kehamilan_ke, $norm)
     {
         $sql = "SELECT 
