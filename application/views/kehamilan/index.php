@@ -29,6 +29,16 @@ date_default_timezone_set('Asia/Jakarta');
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>vendors/styles/style.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>src/styles/style-custom.css">
 
+    <style type="text/css">
+        .gj-datepicker-md [role="right-icon"] {
+            position: absolute;
+            right: 12px !important;
+            top: 12px !important;
+            font-size: 24px;
+            color: #5B6067 !important;
+        }
+    </style>
+
     <style>
         .modal-body {
             max-height: calc(100vh - 210px);
@@ -143,7 +153,7 @@ date_default_timezone_set('Asia/Jakarta');
                                         <div class="input-group-prepend custom">
                                             <div class="input-group-text" id="btnGroupAddon"><i class="icon-copy dw dw-search2"></i></div>
                                         </div>
-                                        <input type="text" class="form-control" autofocus id="norm_cari" name="norm_cari" placeholder="Nomor Medical Record" aria-label="Nomor Medical Record" aria-describedby="btnGroupAddon" oninput="this.value = this.value.replace(/[^0-9]/g, '');" autocomplete="off">
+                                        <input type="text" class="form-control" autofocus id="norm_cari" name="norm_cari" placeholder="Nomor Medical Record" aria-label="Nomor Medical Record" aria-describedby="btnGroupAddon" oninput="this.value = this.value.replace(/[^0-9]/g, '');" autocomplete="off" value="">
                                         <button type="submit" class="btn btn-primary ml-2">Search</button>
                                     </div>
                                 </div>
@@ -341,7 +351,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Tanggal Periksa</label>
                                                     <div class="col-sm-12 col-md-8">
-                                                        <input class="form-control tglwaktupicker" type="text" placeholder="Tanggal Periksa" name="tgl_periksa" value="<?= date('Y-m-d H:i'); ?>">
+                                                        <input class="form-control tglwaktupicker" type="text" placeholder="Tanggal Periksa" name="tgl_periksa" value="<?= date('Y-m-d H:i'); ?>" style="border:1px solid #b8b9bb !important;padding-left: 12px;">
                                                     </div>
                                                 </div>
 
@@ -460,7 +470,7 @@ date_default_timezone_set('Asia/Jakarta');
                         <div class="form-group row">
                             <label class="col-sm-12 col-md-3 col-form-label">Tgl. Terakhir Haid <span style="color: red;">*</span></label>
                             <div class="col-sm-12 col-md-9">
-                                <input class="form-control date-picker" autocomplete="off" placeholder="Select Date" name="tgl_akhir_mens" type="text" required>
+                                <input class="form-control date-picker" autocomplete="off" placeholder="Select Date" name="tgl_akhir_mens" id="tgl_akhir_mens" type="text" style="border:1px solid #b8b9bb !important;padding-left: 12px;background-color: white">
                             </div>
                         </div>
                         <hr>
@@ -562,9 +572,10 @@ date_default_timezone_set('Asia/Jakarta');
     <script src="<?= base_url(); ?>src/plugins/datatables/js/buttons.flash.min.js"></script>
     <script src="<?= base_url(); ?>src/plugins/datatables/js/pdfmake.min.js"></script>
     <script src="<?= base_url(); ?>src/plugins/datatables/js/vfs_fonts.js"></script>
+    <script src="<?php echo base_url(); ?>vendors/scripts/date-time-picker.min.js" type="text/javascript"></script>
 
-    <script src="<?= base_url(); ?>vendors/gijgo-combined-1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-    <link href="<?= base_url(); ?>vendors/gijgo-combined-1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
+    <script src="<?php echo base_url(); ?>vendors/gijgo-combined-1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="<?php echo base_url(); ?>vendors/gijgo-combined-1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
     <script>
         var BASE_URL = '<?= base_url(); ?>';
 
@@ -794,11 +805,7 @@ date_default_timezone_set('Asia/Jakarta');
                 format: 'yyyy-mm-dd HH:MM'
             });
 
-            $(".tglwaktupicker_edit").datetimepicker({
-                footer: true,
-                modal: true,
-                format: 'yyyy-mm-dd HH:MM'
-            });
+            $('#tgl_akhir_mens').dateTimePicker();
 
             init_datatable();
             init_datatable_periksa();
@@ -822,10 +829,10 @@ date_default_timezone_set('Asia/Jakarta');
                     (key >= 96 && key <= 105));
             });
 
-            // $(document).on('click', '.btn-exit-periksa', function(e) {
-            //     e.preventDefault();
-            //     $(`.hal-periksa`).hide('slow');
-            // });
+            $(`.btn-hamil`).click(function(e) {
+                e.preventDefault();
+                $(`#modal-kehamilan-ke`).modal('show');
+            });
 
             $(document).on('click', '.btn-grafik', function(e) {
                 e.preventDefault();
@@ -1077,7 +1084,20 @@ date_default_timezone_set('Asia/Jakarta');
                 let kehamilan_ke = $(this).data('kehamilan_ke');
                 let norm = $(this).data('norm');
                 $(`#modal-periksa`).modal('show');
+                $('#modal-periksa form')[0].reset();
+                $(`input[name=tgl_periksa]`).attr('disabled', false);
+                $(`.gj-icon`).html('events');
+                $(`input[name=berat_badan_janin]`).attr('readonly', false);
+                $(`input[name=lingkar_kepala]`).attr('readonly', false);
+                $(`input[name=lingkar_perut]`).attr('readonly', false);
+
+                $(`input[name=minggu_ke]`).attr('readonly', false);
+                $(`input[name=berat_badan]`).attr('readonly', false);
+                $(`input[name=tinggi_badan]`).attr('readonly', false);
+                $(`input[name=tensi]`).attr('readonly', false);
+
                 $('input[name=id_kehamilan_ke]').val(id_hamil);
+                $(`input[name=norm_periksa]`).val(norm);
                 $('.text-periksa').html(`Periksa Kehamilan ke ${kehamilan_ke}`);
 
                 $.ajax({
@@ -1096,7 +1116,8 @@ date_default_timezone_set('Asia/Jakarta');
 
             $(document).on('click', '.btn-edit_ibu', function(e) {
                 e.preventDefault();
-                $(".tglwaktupicker").attr('disabled', true);
+                $("input[name=tgl_periksa]").attr('disabled', true);
+                $(`.gj-icon`).html('');
                 let id_periksa_kehamilan = $(this).data('id_edit_ibu');
                 let id_kehamilan_ke = $(this).data('id_kehamilan_edit_ibu');
                 let norm = $(this).data('norm_edit_ibu');
@@ -1203,7 +1224,8 @@ date_default_timezone_set('Asia/Jakarta');
 
             $(document).on('click', '.btn-edit_anak', function(e) {
                 e.preventDefault();
-                $(".tglwaktupicker").attr('disabled', true);
+                $("input[name=tgl_periksa]").attr('disabled', true);
+                $(`.gj-icon`).html('');
                 let id_periksa_kehamilan = $(this).data('id_edit_anak');
                 let id_kehamilan_ke = $(this).data('id_kehamilan_edit_anak');
                 let norm = $(this).data('norm_edit_anak');
@@ -1302,11 +1324,6 @@ date_default_timezone_set('Asia/Jakarta');
                         }
                     });
                 });
-            });
-
-            $(`.btn-hamil`).click(function(e) {
-                e.preventDefault();
-                $(`#modal-kehamilan-ke`).modal('show');
             });
 
             $(`.store_periksa`).submit(function(e) {
