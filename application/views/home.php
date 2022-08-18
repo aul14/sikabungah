@@ -24,7 +24,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/src/plugins/datatables/css/dataTables.bootstrap4.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/src/plugins/datatables/css/responsive.bootstrap4.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/vendors/styles/style.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/vendors/styles/style-custom.css">
 </head>
 <body>
 	<div class="pre-loader">
@@ -79,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="product-caption">
 									<h4><a href="<?php echo base_url('pascalahir');?>">Pasca Lahir</a></h4>
 									<div class="price">
-										<span>Menu untuk kondisi ibu setelah melahirkan</span>
+										<span>Menu untuk kondisi anak setelah dilahirkan</span>
 									</div>
 									<a href="<?php echo base_url('pascalahir');?>" class="btn btn-outline-primary btn-block mt-3">Pilih Menu</a>
 								</div>
@@ -99,11 +98,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?php echo base_url();?>/vendors/scripts/script.min.js"></script>
 	<script src="<?php echo base_url();?>/vendors/scripts/process.js"></script>
 	<script src="<?php echo base_url();?>/vendors/scripts/layout-settings.js"></script>
-	<script src="<?php echo base_url();?>/src/plugins/apexcharts/apexcharts.min.js"></script>
-	<script src="<?php echo base_url();?>/src/plugins/datatables/js/jquery.dataTables.min.js"></script>
-	<script src="<?php echo base_url();?>/src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
-	<script src="<?php echo base_url();?>/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
-	<script src="<?php echo base_url();?>/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
-	<script src="<?php echo base_url();?>/vendors/scripts/dashboard.js"></script>
 </body>
 </html>

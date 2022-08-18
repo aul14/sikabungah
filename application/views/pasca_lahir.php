@@ -27,6 +27,16 @@ date_default_timezone_set('Asia/Jakarta');
 	<link rel="stylesheet" type="text/css" href="src/plugins/jvectormap/jquery-jvectormap-2.0.3.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/vendors/styles/style.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/src/styles/style-custom.css">
+
+	<style type="text/css">
+		.gj-datepicker-md [role="right-icon"] {
+		    position: absolute;
+		    right: 12px !important;
+		    top: 12px !important;
+		    font-size: 24px;
+		    color: #5B6067 !important;
+		}
+	</style>
 </head>
 <body>
 	<div class="pre-loader">
@@ -87,7 +97,7 @@ date_default_timezone_set('Asia/Jakarta');
 											<div class="input-group-prepend custom">
 												<div class="input-group-text" id="btnGroupAddon"><i class="icon-copy dw dw-search2"></i></div>
 											</div>
-											<input type="text" class="form-control" id="search_norm" name="search_norm" placeholder="Nomor Medical Record" aria-label="Nomor Medical Record" aria-describedby="btnGroupAddon" oninput="this.value = this.value.replace(/[^0-9]/g, '');" autocomplete="off">
+											<input type="text" class="form-control" id="search_norm" name="search_norm" placeholder="Nomor Medical Record" aria-label="Nomor Medical Record" aria-describedby="btnGroupAddon" oninput="this.value = this.value.replace(/[^0-9]/g, '');" autocomplete="off" value="">
 											<button type="button" class="btn btn-primary ml-2 btn-search">Search</button>
 										</div>
 									</div>
@@ -242,7 +252,7 @@ date_default_timezone_set('Asia/Jakarta');
 						</div>
 						<label for="tanggal_lahir">Tanggal Lahir</label>
 						<div class="input-group custom mb-3">
-							<input class="form-control date-picker" id="tanggal_lahir" name="tanggal_lahir" placeholder="Select Date" type="text">
+							<input class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Pilih tanggal lahir" type="text" style="background-color: white">
 							<div class="input-group-append custom">
 								<span class="input-group-text"><i class="icon-copy dw dw-calendar-1"></i></span>
 							</div>
@@ -291,11 +301,8 @@ date_default_timezone_set('Asia/Jakarta');
 						<input type="hidden" class="form-control form-control-lg" id="id_anak" name="id_anak" readonly>
 						<input type="hidden" class="form-control form-control-lg" id="anak_ke_periksa" name="anak_ke_periksa" readonly>
 						<label for="tanggal_periksa">Tanggal Periksa</label>
-						<div class="input-group custom mb-3">
-							<input class="form-control datetimepicker" id="tanggal_periksa" name="tanggal_periksa" placeholder="Select Date" type="text" value="<?php echo date('Y-m-d H:i:s');?>">
-							<div class="input-group-append custom">
-								<span class="input-group-text"><i class="icon-copy dw dw-calendar-1"></i></span>
-							</div>
+						<div class="mb-3">
+							<input class="form-control" id="tanggal_periksa" name="tanggal_periksa" placeholder="Select Date" type="text" value="<?php echo date('Y-m-d H:i:s');?>" style="border:1px solid #b8b9bb !important;padding-left: 12px;">
 						</div>
 						<label for="bb_anak">Berat badan Anak (Kg)</label>
 						<div class="input-group custom mb-3">
@@ -336,7 +343,7 @@ date_default_timezone_set('Asia/Jakarta');
 					<form id="formeditperiksaanak" method="POST" autocomplete="off">
 						<input type="hidden" class="form-control form-control-lg" id="id_edit_periksa" name="id_edit_periksa" readonly>
 						<input type="hidden" class="form-control form-control-lg" id="edit_anakke_periksa" name="edit_anakke_periksa" readonly>
-						<label for="tanggal_periksa">Tanggal Periksa</label>
+						<label for="edit_tanggal_periksa">Tanggal Periksa</label>
 						<div class="input-group custom mb-3">
 							<input class="form-control" id="edit_tanggal_periksa" name="edit_tanggal_periksa" placeholder="Select Date" type="text" readonly>
 							<div class="input-group-append custom">
@@ -503,11 +510,24 @@ date_default_timezone_set('Asia/Jakarta');
 	<script src="<?php echo base_url();?>/src/plugins/datatables/js/buttons.flash.min.js"></script>
 	<script src="<?php echo base_url();?>/src/plugins/datatables/js/pdfmake.min.js"></script>
 	<script src="<?php echo base_url();?>/src/plugins/datatables/js/vfs_fonts.js"></script>
+	<script src="<?php echo base_url();?>vendors/scripts/date-time-picker.min.js" type="text/javascript"></script>
+
+	<script src="<?php echo base_url();?>vendors/gijgo-combined-1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+	<link href="<?php echo base_url();?>vendors/gijgo-combined-1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
 
 	<script type="text/javascript">
 		$('document').ready(function() {
 			initiatDTableAnak();
 			initiatDTableHistori();
+
+			$("#tanggal_periksa").datetimepicker({
+                footer: true,
+                modal: true,
+                format: 'yyyy-mm-dd HH:MM'
+            });
+
+            $('#tanggal_lahir').dateTimePicker();
+
 
 			$("#form_detail_pasien")[0].reset();
 			$(".btn-add-anak-modal").prop("disabled", true);

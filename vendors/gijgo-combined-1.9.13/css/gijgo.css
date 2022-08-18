@@ -1957,8 +1957,8 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 .gj-datepicker-md [role="right-icon"] {
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
     font-size: 24px;
 }
 

@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/vendors/styles/style.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>src/plugins/animate/animate.min.css">
 </head>
-<body class="login-page">
+<body class="login-page" style="background-color: #fff !important">
 	<div class="login-header box-shadow">
 		<div class="container-fluid d-flex justify-content-between align-items-center">
 			<div class="brand-logo">

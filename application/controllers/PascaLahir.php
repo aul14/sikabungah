@@ -28,7 +28,7 @@ class PascaLahir extends CI_Controller {
 				foreach ($patchData as $row) {
 					$nomor 			= $nomor + 1;
 					$nama 			= trim($row['NAMA']);
-					$tgl_lahir 		= $row['TGL_LAHIR'];
+					$tgl_lahir 		= date( "d F Y", strtotime($row['TGL_LAHIR']));
 					$jns_kelamin 	= $row['KELAMIN'];
 					$alamat 		= $row['ALAMAT'];
 				}

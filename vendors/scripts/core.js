@@ -4586,6 +4586,7 @@ and dependencies (minified).
 	init();
 }(function(){
 	
+	// _url="cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js";
 	/* 
 	----------------------------------------
 	PLUGIN NAMESPACE, PREFIX, DEFAULT SELECTOR(S) 
