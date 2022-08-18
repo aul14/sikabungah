@@ -80,14 +80,14 @@ class M_kehamilan extends CI_Model
 
     public function detail_periksa_by_id($id_periksa_kehamilan)
     {
-        $sql = "SELECT * FROM SIKABUNGAH_PERIKSA_KEHAMILAN WHERE ID_PERIKSA_KEHAMILAN = {$id_periksa_kehamilan}";
+        $sql = "SELECT *, CONVERT(CHAR( 20 ), SIKABUNGAH_PERIKSA_KEHAMILAN.TGL_PERIKSA, 121) AS TGL_PERIKSA_NEW FROM SIKABUNGAH_PERIKSA_KEHAMILAN WHERE ID_PERIKSA_KEHAMILAN = {$id_periksa_kehamilan}";
         return $this->db->query($sql);
     }
 
-    public function update_periksa_anak($id_periksa_kehamilan, $tgl_periksa, $berat_badan_janin, $lingkar_kepala, $lingkar_perut)
+    public function update_periksa_anak($id_periksa_kehamilan, $berat_badan_janin, $lingkar_kepala, $lingkar_perut)
     {
         $sql = "UPDATE SIKABUNGAH_PERIKSA_KEHAMILAN
-                    SET TGL_PERIKSA = '$tgl_periksa',
+                    SET 
                     BERAT_BADAN_JANIN = $berat_badan_janin,
                     LINGKAR_KEPALA = $lingkar_kepala,
                     LINGKAR_PERUT = $lingkar_perut
@@ -97,10 +97,10 @@ class M_kehamilan extends CI_Model
         return $this->db->query($sql);
     }
 
-    public function update_periksa_ibu($id_periksa_kehamilan, $tgl_periksa, $minggu_ke, $berat_badan, $tinggi_badan, $tensi)
+    public function update_periksa_ibu($id_periksa_kehamilan, $minggu_ke, $berat_badan, $tinggi_badan, $tensi)
     {
         $sql = "UPDATE SIKABUNGAH_PERIKSA_KEHAMILAN
-                    SET TGL_PERIKSA = '$tgl_periksa',
+                    SET 
                         MINGGU_KE = '$minggu_ke',
                         BERAT_BADAN = $berat_badan,
                         TINGGI_BADAN = $tinggi_badan,

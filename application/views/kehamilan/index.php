@@ -794,6 +794,12 @@ date_default_timezone_set('Asia/Jakarta');
                 format: 'yyyy-mm-dd HH:MM'
             });
 
+            $(".tglwaktupicker_edit").datetimepicker({
+                footer: true,
+                modal: true,
+                format: 'yyyy-mm-dd HH:MM'
+            });
+
             init_datatable();
             init_datatable_periksa();
 
@@ -1090,6 +1096,7 @@ date_default_timezone_set('Asia/Jakarta');
 
             $(document).on('click', '.btn-edit_ibu', function(e) {
                 e.preventDefault();
+                $(".tglwaktupicker").attr('disabled', true);
                 let id_periksa_kehamilan = $(this).data('id_edit_ibu');
                 let id_kehamilan_ke = $(this).data('id_kehamilan_edit_ibu');
                 let norm = $(this).data('norm_edit_ibu');
@@ -1115,7 +1122,7 @@ date_default_timezone_set('Asia/Jakarta');
                         $(`input[name=berat_badan]`).val(res.result['BERAT_BADAN']);
                         $(`input[name=tinggi_badan]`).val(res.result['TINGGI_BADAN']);
                         $(`input[name=tensi]`).val(res.result['TENSI']);
-                        $(`input[name=tgl_periksa]`).val(res.result['TGL_PERIKSA']);
+                        $(`input[name=tgl_periksa]`).val(res.result['TGL_PERIKSA_NEW']);
                         $(`input[name=id_periksa_kehamilan]`).val(res.result['ID_PERIKSA_KEHAMILAN']);
 
                         $(`input[name=berat_badan_janin]`).val(res.result['BERAT_BADAN_JANIN']);
@@ -1168,6 +1175,9 @@ date_default_timezone_set('Asia/Jakarta');
 
                                 $('#modal-periksa form').removeClass('update_periksa_ibu');
                                 $('#modal-periksa form').addClass('store_periksa');
+                                $(".tglwaktupicker").attr('disabled', false);
+                                // $('#modal-periksa form input[name=tgl_periksa]').removeClass('tglwaktupicker_edit ');
+                                // $('#modal-periksa form input[name=tgl_periksa]').addClass('tglwaktupicker');
                                 $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
                             } else {
                                 $('.update_periksa_ibu')[0].reset();
@@ -1181,6 +1191,9 @@ date_default_timezone_set('Asia/Jakarta');
 
                                 $('#modal-periksa form').removeClass('update_periksa_ibu');
                                 $('#modal-periksa form').addClass('store_periksa');
+                                $(".tglwaktupicker").attr('disabled', false);
+                                // $('#modal-periksa form input[name=tgl_periksa]').removeClass('tglwaktupicker_edit ');
+                                // $('#modal-periksa form input[name=tgl_periksa]').addClass('tglwaktupicker');
                                 $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
                             }
                         }
@@ -1190,6 +1203,7 @@ date_default_timezone_set('Asia/Jakarta');
 
             $(document).on('click', '.btn-edit_anak', function(e) {
                 e.preventDefault();
+                $(".tglwaktupicker").attr('disabled', true);
                 let id_periksa_kehamilan = $(this).data('id_edit_anak');
                 let id_kehamilan_ke = $(this).data('id_kehamilan_edit_anak');
                 let norm = $(this).data('norm_edit_anak');
@@ -1215,7 +1229,7 @@ date_default_timezone_set('Asia/Jakarta');
                         $(`input[name=berat_badan]`).val(res.result['BERAT_BADAN']);
                         $(`input[name=tinggi_badan]`).val(res.result['TINGGI_BADAN']);
                         $(`input[name=tensi]`).val(res.result['TENSI']);
-                        $(`input[name=tgl_periksa]`).val(res.result['TGL_PERIKSA']);
+                        $(`input[name=tgl_periksa]`).val(res.result['TGL_PERIKSA_NEW']);
                         $(`input[name=id_periksa_kehamilan]`).val(res.result['ID_PERIKSA_KEHAMILAN']);
 
                         $(`input[name=berat_badan_janin]`).val(res.result['BERAT_BADAN_JANIN']);
@@ -1268,6 +1282,7 @@ date_default_timezone_set('Asia/Jakarta');
 
                                 $('#modal-periksa form').removeClass('update_periksa_anak');
                                 $('#modal-periksa form').addClass('store_periksa');
+                                $(".tglwaktupicker").attr('disabled', false);
                                 $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
                             } else {
                                 $('.update_periksa_anak')[0].reset();
@@ -1281,6 +1296,7 @@ date_default_timezone_set('Asia/Jakarta');
 
                                 $('#modal-periksa form').removeClass('update_periksa_anak');
                                 $('#modal-periksa form').addClass('store_periksa');
+                                $(".tglwaktupicker").attr('disabled', false);
                                 $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
                             }
                         }

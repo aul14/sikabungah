@@ -132,7 +132,7 @@ class Kehamilan extends CI_Controller
         $lingkar_kepala = $this->input->post('lingkar_kepala');
         $lingkar_perut = $this->input->post('lingkar_perut');
 
-        $query = $this->m_kehamilan->update_periksa_anak($id_periksa_kehamilan, $tgl_periksa, $berat_badan_janin, $lingkar_kepala, $lingkar_perut);
+        $query = $this->m_kehamilan->update_periksa_anak($id_periksa_kehamilan, $berat_badan_janin, $lingkar_kepala, $lingkar_perut);
 
         if ($query) {
             $data = true;
@@ -163,7 +163,7 @@ class Kehamilan extends CI_Controller
         $tinggi_badan = $this->input->post('tinggi_badan');
         $tensi = $this->input->post('tensi');
 
-        $query = $this->m_kehamilan->update_periksa_ibu($id_periksa_kehamilan, $tgl_periksa, $minggu_ke, $berat_badan, $tinggi_badan, $tensi);
+        $query = $this->m_kehamilan->update_periksa_ibu($id_periksa_kehamilan, $minggu_ke, $berat_badan, $tinggi_badan, $tensi);
 
         if ($query) {
             $data = true;
