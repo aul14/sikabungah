@@ -593,9 +593,10 @@ date_default_timezone_set('Asia/Jakarta');
                     let html_tr_anak = "";
                     if (res.data_periksa.length > 0) {
                         let no = 1;
-                        for (let i = 0; i < res.data_periksa.length; i++) {
+                        for (var i = 0; i < res.data_periksa.length; i++) {
+                            let tgl_periksa_new = res.data_periksa[i].TGL_PERIKSA;
                             html_tr += `<tr>
-                                <td class='text-center'>${moment(res.data_periksa[i].TGL_PERIKSA).format('DD-MMMM-YYYY H:mm')}</td>
+                                <td class='text-center'>${tgl_periksa_new}</td>
                                 <td class='text-center'>${res.data_periksa[i].MINGGU_KE}</td>
                                 <td class='text-center'>${res.data_periksa[i].BERAT_BADAN} kg</td>
                                 <td class='text-center'>${res.data_periksa[i].TINGGI_BADAN} cm</td>
@@ -615,7 +616,7 @@ date_default_timezone_set('Asia/Jakarta');
                                 </td>
                                 </tr>`;
                             html_tr_anak += `<tr>
-                                <td>${moment(res.data_periksa[i].TGL_PERIKSA).format('DD-MMMM-YYYY H:mm')}</td>
+                                <td>${tgl_periksa_new}</td>
                                 <td>${res.data_periksa[i].MINGGU_KE}</td>
                                 <td>${res.data_periksa[i].BERAT_BADAN_JANIN} gram</td>
                                 <td>${res.data_periksa[i].LINGKAR_KEPALA} cm</td>
@@ -1167,12 +1168,13 @@ date_default_timezone_set('Asia/Jakarta');
                     $.ajax({
                         type: "post",
                         url: url_periksa,
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        cache: false,
+                        data: $(".update_periksa_ibu").serialize(),
                         dataType: 'json',
+                        beforeSend: function() {
+                            $(".btn-simpan-periksa").prop("disabled", true);
+                        },
                         success: function(response) {
+                            $(".btn-simpan-periksa").prop("disabled", false);
                             if (response.data == true) {
                                 $('#data_table_periksa').DataTable().clear();
                                 $('#data_table_periksa').DataTable().destroy();
@@ -1181,7 +1183,7 @@ date_default_timezone_set('Asia/Jakarta');
                                 data_periksa(response.id_kehamilan_ke, response.norm);
                                 init_datatable_periksa();
 
-                                $('.update_periksa_ibu')[0].reset();
+                                $('#modal-periksa form')[0].reset();
                                 $(`#modal-periksa`).modal('hide');
                                 $(`input[name=norm_periksa]`).val(response.norm);
                                 $(".text_alert_success").html(response.message);
@@ -1201,7 +1203,7 @@ date_default_timezone_set('Asia/Jakarta');
                                 // $('#modal-periksa form input[name=tgl_periksa]').addClass('tglwaktupicker');
                                 $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
                             } else {
-                                $('.update_periksa_ibu')[0].reset();
+                                $('#modal-periksa form')[0].reset();
                                 $(`#modal-periksa`).modal('hide');
                                 $(`input[name=norm_periksa]`).val(response.norm);
                                 $(".text_alert_failed").html(response.message);
@@ -1275,12 +1277,13 @@ date_default_timezone_set('Asia/Jakarta');
                     $.ajax({
                         type: "post",
                         url: url_periksa,
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        cache: false,
+                        data: $(".update_periksa_anak").serialize(),
                         dataType: 'json',
+                        beforeSend: function() {
+                            $(".btn-simpan-periksa").prop("disabled", true);
+                        },
                         success: function(response) {
+                            $(".btn-simpan-periksa").prop("disabled", false);
                             if (response.data == true) {
                                 $('#data_table_periksa').DataTable().clear();
                                 $('#data_table_periksa').DataTable().destroy();
@@ -1289,7 +1292,7 @@ date_default_timezone_set('Asia/Jakarta');
                                 data_periksa(response.id_kehamilan_ke, response.norm);
                                 init_datatable_periksa();
 
-                                $('.update_periksa_anak')[0].reset();
+                                $('#modal-periksa form')[0].reset();
                                 $(`#modal-periksa`).modal('hide');
                                 $(`input[name=norm_periksa]`).val(response.norm);
                                 $(".text_alert_success").html(response.message);
@@ -1307,7 +1310,7 @@ date_default_timezone_set('Asia/Jakarta');
                                 $(".tglwaktupicker").attr('disabled', false);
                                 $(`.store_periksa`).attr('action', `${BASE_URL}kehamilan/store_periksa`);
                             } else {
-                                $('.update_periksa_anak')[0].reset();
+                                $('#modal-periksa form')[0].reset();
                                 $(`#modal-periksa`).modal('hide');
                                 $(`input[name=norm_periksa]`).val(response.norm);
                                 $(".text_alert_failed").html(response.message);
@@ -1333,10 +1336,7 @@ date_default_timezone_set('Asia/Jakarta');
                 $.ajax({
                     type: "post",
                     url: url_periksa,
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    cache: false,
+                    data: $(".store_periksa").serialize(),
                     dataType: 'json',
                     beforeSend: function() {
                         $(".btn-simpan-periksa").prop("disabled", true);
@@ -1351,7 +1351,7 @@ date_default_timezone_set('Asia/Jakarta');
                             data_periksa(response.id_kehamilan_ke, response.norm);
                             init_datatable_periksa();
 
-                            $('.store_periksa')[0].reset();
+                            $('#modal-periksa form')[0].reset();
                             $(`#modal-periksa`).modal('hide');
                             $(`input[name=norm_periksa]`).val(response.norm);
                             $(".text_alert_success").html(response.message);

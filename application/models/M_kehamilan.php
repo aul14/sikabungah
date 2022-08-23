@@ -29,7 +29,7 @@ class M_kehamilan extends CI_Model
                     a.ID_PERIKSA_KEHAMILAN,
                     a.ID_KEHAMILAN_KE,
                     a.NORM,
-                    CONVERT(CHAR( 20 ), a.TGL_PERIKSA, 121) AS TGL_PERIKSA,
+                    CONVERT(VARCHAR(100), a.TGL_PERIKSA, 121) AS TGL_PERIKSA,
                     a.MINGGU_KE,
                     a.BERAT_BADAN,
                     a.TINGGI_BADAN,
