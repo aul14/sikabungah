@@ -1330,8 +1330,6 @@ date_default_timezone_set('Asia/Jakarta');
                 e.preventDefault();
                 let url_periksa = $(this).attr('action');
 
-                // alert('test');
-
                 $.ajax({
                     type: "post",
                     url: url_periksa,
@@ -1340,7 +1338,11 @@ date_default_timezone_set('Asia/Jakarta');
                     contentType: false,
                     cache: false,
                     dataType: 'json',
+                    beforeSend: function() {
+                        $(".btn-simpan-periksa").prop("disabled", true);
+                    },
                     success: function(response) {
+                        $(".btn-simpan-periksa").prop("disabled", false);
                         if (response.data == true) {
                             $('#data_table_periksa').DataTable().clear();
                             $('#data_table_periksa').DataTable().destroy();

@@ -46,7 +46,8 @@ class M_kehamilan extends CI_Model
                 FROM SIKABUNGAH_PERIKSA_KEHAMILAN a
                 LEFT JOIN SIKABUNGAH_KEHAMILAN_KE b ON b.ID_KEHAMILAN_KE = a.ID_KEHAMILAN_KE
                 WHERE a.ID_KEHAMILAN_KE = $id_kehamilan_ke
-                AND a.NORM = '$norm'";
+                AND a.NORM = '$norm'
+                ORDER BY a.CREATE_DATE DESC";
         return $this->db->query($sql);
     }
 
