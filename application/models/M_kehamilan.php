@@ -64,6 +64,9 @@ class M_kehamilan extends CI_Model
         $sql = "INSERT INTO SIKABUNGAH_PERIKSA_KEHAMILAN (ID_KEHAMILAN_KE, NORM, TGL_PERIKSA, MINGGU_KE, BERAT_BADAN, TINGGI_BADAN, TENSI, BERAT_BADAN_JANIN, LINGKAR_KEPALA, LINGKAR_PERUT, CREATE_DATE)
         VALUES ($id_kehamilan_ke, '$norm', '$tgl_periksa', '$minggu_ke', $berat_badan, $tinggi_badan, '$tensi', $berat_badan_janin, $lingkar_kepala, $lingkar_perut, getdate())";
 
+        // var_dump($sql);
+        // die();
+
         return $this->db->query($sql);
     }
 

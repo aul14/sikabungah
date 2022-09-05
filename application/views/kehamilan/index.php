@@ -345,26 +345,26 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Norm</label>
                                                     <div class="col-sm-12 col-md-8">
-                                                        <input class="form-control" type="text" placeholder="Norm" name="norm_periksa" readonly>
+                                                        <input class="form-control" type="text" placeholder="Norm" name="norm_periksa" readonly required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Tanggal Periksa</label>
                                                     <div class="col-sm-12 col-md-8">
-                                                        <input class="form-control tglwaktupicker" type="text" placeholder="Tanggal Periksa" name="tgl_periksa" value="<?= date('Y-m-d H:i'); ?>" style="border:1px solid #b8b9bb !important;padding-left: 12px;">
+                                                        <input class="form-control tglwaktupicker" type="text" placeholder="Tanggal Periksa" name="tgl_periksa" value="<?= date('Y-m-d H:i'); ?>" style="border:1px solid #b8b9bb !important;padding-left: 12px;" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Minggu Kehamilan</label>
                                                     <div class="col-sm-12 col-md-8">
-                                                        <input class="form-control" type="text" placeholder="Minggu Kehamilan" name="minggu_ke" id="minggu_ke">
+                                                        <input class="form-control" type="text" placeholder="Minggu Kehamilan" name="minggu_ke" id="minggu_ke" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Berat Badan Ibu</label>
                                                     <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected col-sm-12 col-md-8 my-0">
-                                                        <input class="form-control" type="text" placeholder="Berat Badan Ibu" name="berat_badan">
+                                                        <input class="form-control" type="text" placeholder="Berat Badan Ibu" name="berat_badan" required>
                                                         <span class="input-group-addon group-span input-group-append">
                                                             <span class="input-group-text">Kg</span>
                                                         </span>
@@ -373,7 +373,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Tinggi Badan Ibu</label>
                                                     <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected col-sm-12 col-md-8 my-0">
-                                                        <input class="form-control" type="text" placeholder="Tinggi Badan Ibu" name="tinggi_badan">
+                                                        <input class="form-control" type="text" placeholder="Tinggi Badan Ibu" name="tinggi_badan" required>
                                                         <span class="input-group-addon group-span input-group-append">
                                                             <span class="input-group-text">cm</span>
                                                         </span>
@@ -382,7 +382,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-4 col-form-label">Tensi Ibu</label>
                                                     <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected col-sm-12 col-md-8 my-0">
-                                                        <input class="form-control" type="text" placeholder="Tensi" name="tensi">
+                                                        <input class="form-control" type="text" placeholder="Tensi" name="tensi" required>
                                                         <span class="input-group-addon group-span input-group-append">
                                                             <span class="input-group-text">mmHg</span>
                                                         </span>
@@ -406,7 +406,7 @@ date_default_timezone_set('Asia/Jakarta');
                                                 <div class="form-group row">
                                                     <label class="col-sm-12 col-md-2 col-form-label">TBBJ</label>
                                                     <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected col-sm-12 col-md-10 my-0">
-                                                        <input class="form-control" type="text" placeholder="Berat Badan Janin" name="berat_badan_janin">
+                                                        <input class="form-control" type="text" placeholder="Berat Badan Janin" name="berat_badan_janin" required>
                                                         <span class="input-group-addon group-span input-group-append">
                                                             <span class="input-group-text">gram</span>
                                                         </span>

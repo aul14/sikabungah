@@ -102,6 +102,9 @@ class Kehamilan extends CI_Controller
         $lingkar_kepala = $this->input->post('lingkar_kepala');
         $lingkar_perut = $this->input->post('lingkar_perut');
 
+        $lingkar_kepala = $lingkar_kepala == '' ? 0 : $lingkar_kepala;
+        $lingkar_perut = $lingkar_perut == '' ? 0 : $lingkar_perut;
+
         $query = $this->m_kehamilan->store_periksa($id_kehamilan_ke, $norm_periksa, $tgl_periksa, $minggu_ke, $berat_badan, $tinggi_badan, $tensi, $berat_badan_janin, $lingkar_kepala, $lingkar_perut);
 
         if ($query) {
